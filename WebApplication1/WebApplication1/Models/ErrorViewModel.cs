@@ -1,6 +1,6 @@
 using System;
 
-namespace Tachzukanit.Models
+namespace WebApplication1.Models
 {
     public class ErrorViewModel
     {
