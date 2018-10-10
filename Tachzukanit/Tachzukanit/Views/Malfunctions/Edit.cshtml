@@ -12,7 +12,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="MalfunctionId" />
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
                 <input asp-for="Status" class="form-control" />
@@ -29,9 +29,9 @@
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Resource" class="control-label"></label>
-                <input asp-for="Resource" class="form-control" />
-                <span asp-validation-for="Resource" class="text-danger"></span>
+                <label asp-for="Resources" class="control-label"></label>
+                <input asp-for="Resources" class="form-control" />
+                <span asp-validation-for="Resources" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CreationDate" class="control-label"></label>

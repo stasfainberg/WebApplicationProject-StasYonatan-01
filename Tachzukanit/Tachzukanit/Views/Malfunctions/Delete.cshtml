@@ -30,10 +30,10 @@
             @Html.DisplayFor(model => model.Content)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Resource)
+            @Html.DisplayNameFor(model => model.Resources)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Resource)
+            @Html.DisplayFor(model => model.Resources)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.CreationDate)
@@ -50,7 +50,7 @@
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="MalfunctionId" />
         <input type="submit" value="Delete" class="btn btn-default" /> |
         <a asp-action="Index">Back to List</a>
     </form>

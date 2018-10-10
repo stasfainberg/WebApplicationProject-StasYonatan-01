@@ -29,10 +29,10 @@
             @Html.DisplayFor(model => model.Content)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Resource)
+            @Html.DisplayNameFor(model => model.Resources)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Resource)
+            @Html.DisplayFor(model => model.Resources)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.CreationDate)
@@ -49,6 +49,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.MalfunctionId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

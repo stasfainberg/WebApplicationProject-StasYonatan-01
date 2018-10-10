@@ -8,11 +8,29 @@ namespace Tachzukanit.Models
 {
     public class TachzukanitContext : DbContext
     {
+        public DbSet<Malfunction> Malfunction { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Apartment> Apartment { get; set; }
+
+
         public TachzukanitContext (DbContextOptions<TachzukanitContext> options)
             : base(options)
         {
+
         }
 
-        public DbSet<Tachzukanit.Models.Malfunction> Malfunction { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Malfunction>()
+                .HasOne(mal => mal.RequestedBy)                
+                .WithMany(usr => usr.malfunctions)
+                .IsRequired();
+
+            modelBuilder.Entity<Malfunction>()
+                .HasOne(mal => mal.CurrentApartment)
+                .WithMany(apt => apt.malfunctions)
+                .IsRequired();
+
+        }
     }
 }

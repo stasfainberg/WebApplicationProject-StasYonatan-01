@@ -7,10 +7,9 @@ namespace Tachzukanit.Models
 {
     public class Malfunction
     {
-
         #region Properties
 
-        public int Id { get; set; }
+        public string MalfunctionId { get; set; }
 
         public int Status { get; set; }
 
@@ -18,11 +17,15 @@ namespace Tachzukanit.Models
 
         public string Content { get; set; }
 
-        public string Resource { get; set; }
+        public string Resources { get; set; }
 
         public DateTime CreationDate { get; set; }
 
         public DateTime ModifiedDate { get; set; }
+
+        public Apartment CurrentApartment { get; set; }
+
+        public User RequestedBy { get; set; }
 
         #endregion
     }

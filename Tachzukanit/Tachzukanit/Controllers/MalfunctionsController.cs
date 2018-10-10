@@ -21,11 +21,12 @@ namespace Tachzukanit.Controllers
         // GET: Malfunctions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Malfunction.ToListAsync());
+            var databaseContext = _context.Malfunction.Include(p => p.CurrentApartment).Include(ps => ps.RequestedBy);
+            return View(await databaseContext.ToListAsync());
         }
 
         // GET: Malfunctions/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -33,7 +34,8 @@ namespace Tachzukanit.Controllers
             }
 
             var malfunction = await _context.Malfunction
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.RequestedBy).Include(ps => ps.CurrentApartment)
+                .SingleOrDefaultAsync(m => m.MalfunctionId == id);
             if (malfunction == null)
             {
                 return NotFound();
@@ -43,8 +45,17 @@ namespace Tachzukanit.Controllers
         }
 
         // GET: Malfunctions/Create
-        public IActionResult Create()
-        {
+        public async Task<IActionResult> Create()
+        {            
+            var apartments = from apt in _context.Apartment.Include(s => s.malfunctions)
+                    select new { Value = apt.ApartmentId, Text = apt.Address};
+
+            var users = from usr in _context.User.Include(s => s.malfunctions)
+                    select new { Value = usr.UserId, Text = usr.Name };
+            
+            ViewData["CurrentApartment"] = new SelectList(await apartments.ToListAsync(), "Value", "Text");
+            ViewData["User"] = new SelectList(await users.ToListAsync(), "Value", "Text");
+
             return View();
         }
 
@@ -53,7 +64,7 @@ namespace Tachzukanit.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Status,Title,Content,Resource,CreationDate,ModifiedDate")] Malfunction malfunction)
+        public async Task<IActionResult> Create([Bind("MalfunctionId,Status,Title,Content,Resources,CreationDate,ModifiedDate,CurrentApartment")] Malfunction malfunction)
         {
             if (ModelState.IsValid)
             {
@@ -65,14 +76,14 @@ namespace Tachzukanit.Controllers
         }
 
         // GET: Malfunctions/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var malfunction = await _context.Malfunction.SingleOrDefaultAsync(m => m.Id == id);
+            var malfunction = await _context.Malfunction.SingleOrDefaultAsync(m => m.MalfunctionId == id);
             if (malfunction == null)
             {
                 return NotFound();
@@ -85,9 +96,9 @@ namespace Tachzukanit.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Status,Title,Content,Resource,CreationDate,ModifiedDate")] Malfunction malfunction)
+        public async Task<IActionResult> Edit(string id, [Bind("MalfunctionId,Status,Title,Content,Resources,CreationDate,ModifiedDate")] Malfunction malfunction)
         {
-            if (id != malfunction.Id)
+            if (id != malfunction.MalfunctionId)
             {
                 return NotFound();
             }
@@ -101,7 +112,7 @@ namespace Tachzukanit.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MalfunctionExists(malfunction.Id))
+                    if (!MalfunctionExists(malfunction.MalfunctionId))
                     {
                         return NotFound();
                     }
@@ -116,7 +127,7 @@ namespace Tachzukanit.Controllers
         }
 
         // GET: Malfunctions/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -124,7 +135,7 @@ namespace Tachzukanit.Controllers
             }
 
             var malfunction = await _context.Malfunction
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.MalfunctionId == id);
             if (malfunction == null)
             {
                 return NotFound();
@@ -136,17 +147,17 @@ namespace Tachzukanit.Controllers
         // POST: Malfunctions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var malfunction = await _context.Malfunction.SingleOrDefaultAsync(m => m.Id == id);
+            var malfunction = await _context.Malfunction.SingleOrDefaultAsync(m => m.MalfunctionId == id);
             _context.Malfunction.Remove(malfunction);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MalfunctionExists(int id)
+        private bool MalfunctionExists(string id)
         {
-            return _context.Malfunction.Any(e => e.Id == id);
+            return _context.Malfunction.Any(e => e.MalfunctionId == id);
         }
     }
 }
