@@ -44,12 +44,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="CurrentApartment" class="control-label"></label>
-                <select asp-for="CurrentApartment" class="form-control" asp-items="ViewBag.Apartment"/>
+                <select asp-for="CurrentApartment" class="form-control" asp-items="ViewBag.all_appartments"}></Select>
                 <span asp-validation-for="CurrentApartment" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RequestedBy" class="control-label"></label>
-                <input asp-for="RequestedBy" class="form-control" />
+                <label asp-for="RequestedBy" class="control-label"></label>                
+                <select asp-for="RequestedBy" class="form-control" asp-items="ViewBag.all_users" }></select>
                 <span asp-validation-for="RequestedBy" class="text-danger"></span>
             </div>
             <div class="form-group">

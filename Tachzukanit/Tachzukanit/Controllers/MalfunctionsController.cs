@@ -53,8 +53,8 @@ namespace Tachzukanit.Controllers
             var users = from usr in _context.User.Include(s => s.malfunctions)
                     select new { Value = usr.UserId, Text = usr.Name };
             
-            ViewData["CurrentApartment"] = new SelectList(await apartments.ToListAsync(), "Value", "Text");
-            ViewData["User"] = new SelectList(await users.ToListAsync(), "Value", "Text");
+            ViewData["all_appartments"] = new SelectList(await apartments.ToListAsync(), "Value", "Text");
+            ViewData["all_users"] = new SelectList(await users.ToListAsync(), "Value", "Text");
 
             return View();
         }
