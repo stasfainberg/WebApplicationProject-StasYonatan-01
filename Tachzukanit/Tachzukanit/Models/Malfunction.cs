@@ -11,7 +11,7 @@ namespace Tachzukanit.Models
 
         public string MalfunctionId { get; set; }
 
-        public int Status { get; set; }
+        public Status Status { get; set; }
 
         public string Title { get; set; }
 

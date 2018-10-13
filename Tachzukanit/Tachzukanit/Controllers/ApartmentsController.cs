@@ -148,5 +148,28 @@ namespace Tachzukanit.Controllers
         {
             return _context.Apartment.Any(e => e.ApartmentId == id);
         }
+
+        // GET: Apartments/Search
+        public ActionResult Search(String address = null, String roonNun = null)
+        {
+            // Get the list of all apartments
+            ViewBag.Apartments = new SelectList(_context.Apartment.Select (i => i));
+
+            var returnDataQuery = _context.Apartment.Select(i => i);
+
+            // Check if address is not null
+            if (!String.IsNullOrEmpty(address))
+            {
+               returnDataQuery = returnDataQuery.Where(i => i.Address == address);
+            }
+
+            // Check if the room number is not null
+            if (!String.IsNullOrEmpty(roonNun))
+            {
+                returnDataQuery = returnDataQuery.Where(i => i.RoomsNumber == roonNun);
+            }
+
+            return View(returnDataQuery.ToList());
+        }
     }
 }

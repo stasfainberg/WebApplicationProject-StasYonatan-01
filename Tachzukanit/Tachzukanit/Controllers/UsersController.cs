@@ -148,5 +148,44 @@ namespace Tachzukanit.Controllers
         {
             return _context.User.Any(e => e.UserId == id);
         }
+
+        // GET: Users/Search
+        public ActionResult Search(String name = null, String role = null, String email = null,
+                                    String phone = null, String address = null)
+        {
+            var returnDataQuery = _context.User.Select(i => i);
+
+            // Check if name is not null
+            if (!String.IsNullOrEmpty(name))
+            {
+                returnDataQuery = returnDataQuery.Where(i => i.Name == name);
+            }
+
+            // Check if role is not null
+            if (!String.IsNullOrEmpty(role))
+            {
+                returnDataQuery = returnDataQuery.Where(i => ((int)i.Role).ToString() == role);
+            }
+
+            // Check if email is not null
+            if (!String.IsNullOrEmpty(name))
+            {
+                returnDataQuery = returnDataQuery.Where(i => i.Email == email);
+            }
+
+            // Check if phone is not null
+            if (!String.IsNullOrEmpty(name))
+            {
+                returnDataQuery = returnDataQuery.Where(i => i.Phone == phone);
+            }
+
+            // Check if address is not null
+            if (!String.IsNullOrEmpty(name))
+            {
+                returnDataQuery = returnDataQuery.Where(i => i.Address == address);
+            }
+
+            return View(returnDataQuery.ToList());
+        }
     }
 }

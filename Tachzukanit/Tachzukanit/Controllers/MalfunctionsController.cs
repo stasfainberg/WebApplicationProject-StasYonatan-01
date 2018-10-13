@@ -159,5 +159,60 @@ namespace Tachzukanit.Controllers
         {
             return _context.Malfunction.Any(e => e.MalfunctionId == id);
         }
+
+        // GET: Malfunctions/Search
+        public ActionResult Search(String status = null, String title= null, String content = null,
+                                    String createDate = null, String modifeyDate = null,
+                                    String roomNum = null, String userName = null)
+        {
+            // Get the list of all apartments
+            ViewBag.Malfunctions = new SelectList(_context.Malfunction.Select(i => i.Title));
+
+            var returnDataQuery = _context.Malfunction.Include(r => r.CurrentApartment).Include(r => r.RequestedBy).Select(r => r);
+
+            // Check if status is not null
+            if (!String.IsNullOrEmpty(status))
+            {
+                returnDataQuery = returnDataQuery.Where(i => ((int)i.Status).ToString() == status);
+            }
+
+            // Check if the title is not null
+            if (!String.IsNullOrEmpty(title))
+            {
+                returnDataQuery = returnDataQuery.Where(i => i.Title.Contains(title));
+            }
+
+            // Check if the content is not null
+            if (!String.IsNullOrEmpty(content))
+            {
+                returnDataQuery = returnDataQuery.Where(i => i.Content.Contains(content));
+            }
+
+            // Check if the creation date is not null
+            if (!String.IsNullOrEmpty(createDate))
+            {
+                returnDataQuery = returnDataQuery.Where(i => i.CreationDate >= DateTime.Parse(createDate));
+            }
+
+            // Check if the modifey date is not null
+            if (!String.IsNullOrEmpty(modifeyDate))
+            {
+                returnDataQuery = returnDataQuery.Where(i => i.ModifiedDate <= DateTime.Parse(modifeyDate));
+            }
+
+            // Check if the room number is not null
+            if (!String.IsNullOrEmpty(modifeyDate))
+            {
+                returnDataQuery = returnDataQuery.Where(i => i.CurrentApartment.RoomsNumber == roomNum);
+            }
+
+            // Check if the user name is not null
+            if (!String.IsNullOrEmpty(userName))
+            {
+                returnDataQuery = returnDataQuery.Where(i => i.RequestedBy.Name.Equals(userName));
+            }
+
+            return View(returnDataQuery.ToList());
+        }
     }
 }
