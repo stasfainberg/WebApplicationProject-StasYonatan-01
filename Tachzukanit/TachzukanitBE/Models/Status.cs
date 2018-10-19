@@ -1,4 +1,4 @@
-﻿namespace TachzukanitBE.Models
+﻿namespace Tachzukanit.Models
 {
     public enum Status
     {
