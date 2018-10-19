@@ -22,7 +22,8 @@ namespace TachzukanitBE.Controllers
         // GET: Malfunctions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Malfunction.ToListAsync());
+            var databaseContext = _context.Malfunction.Include(p => p.CurrentApartment).Include(ps => ps.RequestedBy);
+            return View(await databaseContext.ToListAsync());
         }
 
         // GET: Malfunctions/Details/5
@@ -50,10 +51,14 @@ namespace TachzukanitBE.Controllers
                              select new { Value = apt.ApartmentId, Text = apt.Address };
 
             var users = from usr in _context.User.Include(s => s.malfunctions)
-                        select new { Value = usr.UserId, Text = usr.FullName };
+                        select new { Value = usr.UserId, Text = usr.Email };
+
+            var statuses = from Status stat in Enum.GetValues(typeof(Status))
+                           select new { Value = (int)stat, Text = stat.ToString() };
 
             ViewData["all_appartments"] = new SelectList(await apartments.ToListAsync(), "Value", "Text");
             ViewData["all_users"] = new SelectList(await users.ToListAsync(), "Value", "Text");
+            ViewData["statuses"] = new SelectList(statuses, "Value", "Text");
 
             return View();
         }
@@ -64,7 +69,7 @@ namespace TachzukanitBE.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MalfunctionId,Status,Title,Content,Resources,CreationDate,ModifiedDate,CurrentApartment,RequestedBy")] Malfunction malfunction)
-        {
+        {            
             if (ModelState.IsValid)
             {
                 _context.Add(malfunction);
