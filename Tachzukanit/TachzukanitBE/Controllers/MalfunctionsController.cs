@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -51,7 +52,7 @@ namespace TachzukanitBE.Controllers
                              select new { Value = apt.ApartmentId, Text = apt.Address };
 
             var users = from usr in _context.User.Include(s => s.malfunctions)
-                        select new { Value = usr.UserId, Text = usr.Email };
+                        select new { Value = usr.Id, Text = usr.Email };
 
             var statuses = from Status stat in Enum.GetValues(typeof(Status))
                            select new { Value = (int)stat, Text = stat.ToString() };
@@ -68,12 +69,37 @@ namespace TachzukanitBE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MalfunctionId,Status,Title,Content,Resources,CreationDate,ModifiedDate,CurrentApartment,RequestedBy")] Malfunction malfunction)
+        public async Task<IActionResult> Create([Bind("CurrentApartment")]int CurrentApartment, [Bind("RequestedBy")]string RequestedBy, [Bind("MalfunctionId,Status,Title,Content,Resources,CreationDate,ModifiedDate,CurrentApartmentId,RequestedById")] Malfunction malfunction)
         {            
             if (ModelState.IsValid)
             {
+                // Creating the query of the apartment
+                var queryApt = from apt in _context.Apartment
+                               where apt.ApartmentId == CurrentApartment
+                               select apt;
+
+                // Creating the query of the user
+                var queryUsr = from usr in _context.User
+                               where usr.Id == RequestedBy
+                               select usr;
+
+                // If the id of the apartment/user does not exist in DB
+                if (!queryApt.Any() || !queryApt.Any())
+                {
+                    return View(malfunction);
+                }
+
+                // Adding the apartment to the malfunction to save
+                var curApartment = queryApt.First();
+                malfunction.CurrentApartment = curApartment;
+
+                // Adding the user to the malfunction to save
+                var curUser = queryUsr.First();
+                malfunction.RequestedBy= curUser;
+
                 _context.Add(malfunction);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(malfunction);
