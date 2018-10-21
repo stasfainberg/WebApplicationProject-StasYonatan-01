@@ -22,6 +22,7 @@ namespace TachzukanitBE.Controllers
         // GET: Apartments
         public async Task<IActionResult> Index()
         {
+            //return RedirectToAction("Index", "HomeController", await _context.Apartment.ToListAsync());
             return View(await _context.Apartment.ToListAsync());
         }
 

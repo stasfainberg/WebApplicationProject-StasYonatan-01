@@ -11,9 +11,10 @@ using Tachzukanit.Models;
 namespace Tachzukanit.Migrations
 {
     [DbContext(typeof(TachzukanitContext))]
-    partial class TachzukanitContextModelSnapshot : ModelSnapshot
+    [Migration("20181019141654_enums")]
+    partial class enums
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
