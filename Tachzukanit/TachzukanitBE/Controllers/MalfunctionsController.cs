@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TachzukanitBE.Data;
 using TachzukanitBE.Models;
+using TachzukanitBE.ViewModels;
 
 namespace TachzukanitBE.Controllers
 {
@@ -17,6 +18,33 @@ namespace TachzukanitBE.Controllers
         public MalfunctionsController(TachzukanitDbContext context)
         {
             _context = context;
+        }
+
+        // POST: Get malfunctions parameters from the user and search in server
+        //       it shows the malfunctions details and also user name, appartment password
+        public async Task<IActionResult> ShowMalfExtraDetails(DateTime createDate, String status,
+                                                              String address, String userName)
+        {
+
+            var q = from malfunction in _context.Malfunction
+                    join appartments in _context.Apartment on malfunction.CurrentApartment.ApartmentId equals appartments.ApartmentId
+                    join users in _context.User on malfunction.RequestedBy.Id equals users.Id
+                    where malfunction.CreationDate >= createDate &&
+                          malfunction.Status.ToString().Equals(status) &&
+                          malfunction.CurrentApartment.Address.Equals(address) &&
+                          malfunction.RequestedBy.FullName.Equals(userName)
+                    select new ExtraDetailsMalfunctionsVM()
+                    {
+                        Title = malfunction.Title,
+                        Status = malfunction.Status.ToString(),
+                        Content = malfunction.Content,
+                        CreationDate = malfunction.CreationDate,
+                        ModifiedDate = malfunction.ModifiedDate,
+                        AppartmentAddress = appartments.Address,
+                        userName = users.FullName
+                    };
+
+            return View(await q.ToListAsync());
         }
 
         // GET: Malfunctions
