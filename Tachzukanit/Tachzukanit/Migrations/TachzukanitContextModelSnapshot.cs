@@ -83,7 +83,7 @@ namespace Tachzukanit.Migrations
 
                     b.Property<string>("Phone");
 
-                    b.Property<string>("Role");
+                    b.Property<int>("Role");
 
                     b.HasKey("UserId");
 

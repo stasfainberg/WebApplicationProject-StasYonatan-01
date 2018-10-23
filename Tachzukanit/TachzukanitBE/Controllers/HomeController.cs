@@ -4,16 +4,26 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TachzukanitBE.Data;
 using TachzukanitBE.Models;
 
 namespace TachzukanitBE.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly TachzukanitDbContext _context;
+
+        public HomeController(TachzukanitDbContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            var apartments = from apt in _context.Apartment select apt;
+            return View(apartments);
         }
+
 
         public IActionResult About()
         {

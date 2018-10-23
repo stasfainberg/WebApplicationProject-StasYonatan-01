@@ -3,45 +3,43 @@
 @{
     ViewData["Title"] = "Index";
 }
+@section Scripts
+    {
 
-<h2>Index</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Photo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomsNumber)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Photo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomsNumber)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a>
-            </td>
-        </tr>
+    <link rel="stylesheet" href="~/assets/css/main.css" />
+    <link rel="stylesheet" href="~/css/search.css" />
 }
-    </tbody>
-</table>
+<br />
+<br />
+<div class="search">
+    <input type="text" class="search-query" placeholder="חיפוש" />
+    <button class="search-button" type="submit">
+        <i class="fa fa-search"></i>
+    </button>
+</div>
+<br />
+
+
+<br />
+
+<section class="tiles">
+    @if (Model != null)
+    {
+        @foreach (var item in Model)
+        {
+            <article class="style1">
+                <span class="image">
+                    <img src="@Url.Content(item.Photo)" />
+                </span>
+                <a asp-action="Details" asp-route-id="@item.ApartmentId">
+                    <h2>@Html.DisplayFor(modelItem => item.Address)</h2>
+                    <div class="content">
+                        <p>@Html.DisplayFor(modelItem => item.RoomsNumber)</p>
+                    </div>
+                </a>
+
+            </article>
+        }
+    }
+</section>
+<p>@Html.ActionLink("Create", "Create", "Apartments") </p>

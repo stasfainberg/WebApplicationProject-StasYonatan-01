@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,12 +13,16 @@ namespace TachzukanitBE.Models
 
         public string UserId { get; set; }
 
+        [Required]
+        [MinLength(4)]
+        [MaxLength(25)]
         public string FullName { get; set; }
         
         public string FacebookId { get; set; }
-
-        public string Phone { get; set; }
-
+        
+        [Required]
+        [MinLength(4)]
+        [MaxLength(25)]
         public string Address { get; set; }
 
         public ICollection<Malfunction> malfunctions { get; set; }

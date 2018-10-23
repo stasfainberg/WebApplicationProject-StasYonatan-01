@@ -242,13 +242,15 @@ namespace TachzukanitBE.Data.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("Address");
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(25);
 
                     b.Property<string>("FacebookId");
 
-                    b.Property<string>("FullName");
-
-                    b.Property<string>("Phone");
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(25);
 
                     b.Property<string>("UserId");
 

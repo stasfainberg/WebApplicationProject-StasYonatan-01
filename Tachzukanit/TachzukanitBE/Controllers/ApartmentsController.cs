@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,7 @@ namespace TachzukanitBE.Controllers
         // GET: Apartments
         public async Task<IActionResult> Index()
         {
+            //return RedirectToAction("Index", "HomeController", await _context.Apartment.ToListAsync());
             return View(await _context.Apartment.ToListAsync());
         }
 
@@ -148,6 +150,31 @@ namespace TachzukanitBE.Controllers
         private bool ApartmentExists(int id)
         {
             return _context.Apartment.Any(e => e.ApartmentId == id);
+        }
+
+        public IActionResult About()
+        {
+            ViewData["Message"] = "Your application description page.";
+
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "Your contact page.";
+
+            return View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
