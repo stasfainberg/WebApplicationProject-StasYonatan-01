@@ -5,61 +5,80 @@
 }
 
 <h2>Manager Screen</h2>
+<br />
+<div>
+    @using (Html.BeginForm("ShowMalfExtraDetails", "Malfunctions", FormMethod.Get))
+    {
+            <div>
+                <label for="create-date">Date/time:</label>
+                <input type="datetime-local" id="create-date"
+                       name="create-date"
+                       min="2016-01-01T00:00" max="2024-01-01T00:00" />
+            </div>
+            <span>Status: </span> @Html.DropDownList("Status", new List<SelectListItem> { new SelectListItem { Value = "0" , Text ="Open" },
+                                                     new SelectListItem { Value = "1" , Text ="Closed" },
+                                                     new SelectListItem { Value = "2" , Text ="In Progress" }}, "Please choose status")
+            <input type="text" class="search-query" placeholder="Address" id="address" />
+            <input type="text" class="search-query" placeholder="name" id="user-name" />
+            <input type="submit" value="Search" />
+    }
+ </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppartmentAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.userName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
+<br/>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Content)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreationDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifiedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AppartmentAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.userName)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AppartmentAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.userName)
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreationDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifiedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AppartmentAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.userName)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

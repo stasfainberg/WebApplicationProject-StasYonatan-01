@@ -48,6 +48,15 @@ namespace TachzukanitBE.Controllers
             return View(await q.ToListAsync());
         }
 
+        // Get date
+        public async Task<IActionResult> CurrentDate()
+        {
+            CurrentDate currDate = new CurrentDate();
+            currDate.Date = DateTime.Today;
+
+            return View(currDate);
+        }
+
         // GET: Malfunctions
         public async Task<IActionResult> Index()
         {
