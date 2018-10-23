@@ -78,7 +78,7 @@ namespace TachzukanitBE
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Apartments/Error");
                 app.UseHsts();
             }
 
@@ -92,7 +92,7 @@ namespace TachzukanitBE
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Apartments}/{action=Index}/{id?}");
             });
         }
     }

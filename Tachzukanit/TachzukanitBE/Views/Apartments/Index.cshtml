@@ -7,27 +7,39 @@
     {
 
     <link rel="stylesheet" href="~/assets/css/main.css" />
-        }
-<br/>
+    <link rel="stylesheet" href="~/css/search.css" />
+}
 <br />
-    <section class="tiles">
-        @if (Model != null)
+<br />
+<div class="search">
+    <input type="text" class="search-query" placeholder="חיפוש" />
+    <button class="search-button" type="submit">
+        <i class="fa fa-search"></i>
+    </button>
+</div>
+<br />
+
+
+<br />
+
+<section class="tiles">
+    @if (Model != null)
+    {
+        @foreach (var item in Model)
         {
-            @foreach (var item in Model)
-            {
-                <article class="style1">
-                    <span class="image">
-                        <img src="@Url.Content(item.Photo)" alt="" />
-                    </span>
-                    <a href="~/Apartments/Details.cshtml">
-                        <h2>@Html.DisplayFor(modelItem => item.Address)</h2>
-                        <div class="content">
-                            <p>@Html.DisplayFor(modelItem => item.RoomsNumber)</p>
-                            <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
-                            <a asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a>
-                        </div>
-                    </a>
-                </article>
-            }
+            <article class="style1">
+                <span class="image">
+                    <img src="@Url.Content(item.Photo)" />
+                </span>
+                <a asp-action="Details" asp-route-id="@item.ApartmentId">
+                    <h2>@Html.DisplayFor(modelItem => item.Address)</h2>
+                    <div class="content">
+                        <p>@Html.DisplayFor(modelItem => item.RoomsNumber)</p>
+                    </div>
+                </a>
+
+            </article>
         }
-    </section>
+    }
+</section>
+<p>@Html.ActionLink("Create", "Create", "Apartments") </p>
