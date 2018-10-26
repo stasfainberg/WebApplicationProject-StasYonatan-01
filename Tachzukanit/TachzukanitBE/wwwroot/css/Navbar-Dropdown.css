@@ -1,8 +1,4 @@
-﻿body {
-}
-
-
-
+﻿
 .myDropdown_navbar {
     overflow: hidden;
     /*background-color: #333;*/
@@ -63,7 +59,4 @@
 .myDropdown_dropdown:hover .myDropdown_dropdown-content {
     display: block;
 }
-
-
-
 
