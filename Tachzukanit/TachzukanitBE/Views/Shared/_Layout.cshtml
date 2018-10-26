@@ -8,10 +8,8 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
-        <!--  STAS  -->
         <link rel="stylesheet" href="~/css/Navbar-Dropdown.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <!--  STAS  -->
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -33,62 +31,36 @@
                 <a asp-area="" asp-controller="Apartments" asp-action="Index" class="navbar-brand">TachzukanitBE</a>
             </div>
             <div class="navbar-collapse collapse">
-                @*<ul class="nav navbar-nav">
-                          <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                          <li><a asp-area="" asp-controller="Apartments" asp-action="About">About</a></li>
-                          <li><a asp-area="" asp-controller="Apartments" asp-action="Contact">Contact</a></li>
-                 </ul>*@
-
-                <!--  STAS Code Starts Here -->
-                <!--  User Dropdown Start Here -->
                 <div class="myDropdown_navbar">
                     <div class="myDropdown_dropdown">
                         <button class="myDropdown_dropbtn">
-                            User
+                            Apartment
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div class="myDropdown_dropdown-content">
-                            <a href="#">Create New</a>
-                            <a href="#">Show All</a>
+                            <a asp-area="" asp-controller="Apartments" asp-action="Create">Create New</a>
+                            <a asp-area="" asp-controller="Apartments" asp-action="Index">Show All</a>
                         </div>
                     </div>
-                    <!--  User Dropdown Ends Here -->
-                    <!--  Apartment Dropdown Start Here -->
                     <div class="myDropdown_navbar">
                         <div class="myDropdown_dropdown">
                             <button class="myDropdown_dropbtn">
-                                Apartment
+                                Malfunction
                                 <i class="fa fa-caret-down"></i>
                             </button>
                             <div class="myDropdown_dropdown-content">
-                                <a href="#">Create New</a>
-                                <a href="#">Show All</a>
+                                <a asp-area="" asp-controller="Malfunctions" asp-action="Create">Create New</a>
+                                <a asp-area="" asp-controller="Malfunctions" asp-action="Index">Show All</a>
                             </div>
                         </div>
-                        <!--  Apartment Dropdown Ends Here -->
-                        <!--  Malfunction Dropdown Start Here -->
-                        <div class="myDropdown_navbar">
-                            <div class="myDropdown_dropdown">
-                                <button class="myDropdown_dropbtn">
-                                    Malfunction
-                                    <i class="fa fa-caret-down"></i>
-                                </button>
-                                <div class="myDropdown_dropdown-content">
-                                    <a href="#">Create New</a>
-                                    <a href="#">Show All</a>
-                                </div>
-                            </div>
-                            <ul class="nav navbar-nav">
-                                <li><a asp-area="" asp-controller="Apartments" asp-action="About">About</a></li>
-                                <li><a asp-area="" asp-controller="Apartments" asp-action="Contact">Contact</a></li>
-                            </ul>
-                            <partial name="_LoginPartial" />
-                        </div>
-                        <!--  Malfunction Dropdown Ends Here -->
-                        <!--  STAS Code Ends Here -->
-                        @*<partial name="_LoginPartial" />*@
+                        <ul class="nav navbar-nav">
+                            <li><a asp-area="" asp-controller="Apartments" asp-action="About">About</a></li>
+                            <li><a asp-area="" asp-controller="Apartments" asp-action="Contact">Contact</a></li>
+                        </ul>
+                        <partial name="_LoginPartial" />
                     </div>
                 </div>
+            </div>
     </nav>
 
     <partial name="_CookieConsentPartial" />
