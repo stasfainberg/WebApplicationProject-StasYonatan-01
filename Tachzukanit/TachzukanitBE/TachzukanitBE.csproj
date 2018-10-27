@@ -6,6 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\css\Dropdown-na.css" />
+    <Content Remove="wwwroot\css\Dropdown-nav-bar.css" />
+    <Content Remove="wwwroot\css\Dropdown-NavBar.css" />
+    <Content Remove="wwwroot\css\DropDown.css" />
+    <Content Remove="wwwroot\css\search - Copy.css" />
+    <Content Remove="wwwroot\css\StyleSheet.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="entityframework" Version="6.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />

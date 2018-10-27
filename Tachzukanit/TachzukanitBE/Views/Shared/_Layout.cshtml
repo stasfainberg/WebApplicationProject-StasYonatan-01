@@ -8,6 +8,8 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/Navbar-Dropdown.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -29,11 +31,35 @@
                 <a asp-area="" asp-controller="Apartments" asp-action="Index" class="navbar-brand">TachzukanitBE</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Apartments" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Apartments" asp-action="Contact">Contact</a></li>
-                </ul>
-                <partial name="_LoginPartial" />
+                <div class="myDropdown_navbar">
+                    <div class="myDropdown_dropdown">
+                        <button class="myDropdown_dropbtn">
+                            Apartment
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="myDropdown_dropdown-content">
+                            <a asp-area="" asp-controller="Apartments" asp-action="Create">Create New</a>
+                            <a asp-area="" asp-controller="Apartments" asp-action="Index">Show All</a>
+                        </div>
+                    </div>
+                    <div class="myDropdown_navbar">
+                        <div class="myDropdown_dropdown">
+                            <button class="myDropdown_dropbtn">
+                                Malfunction
+                                <i class="fa fa-caret-down"></i>
+                            </button>
+                            <div class="myDropdown_dropdown-content">
+                                <a asp-area="" asp-controller="Malfunctions" asp-action="Create">Create New</a>
+                                <a asp-area="" asp-controller="Malfunctions" asp-action="Index">Show All</a>
+                            </div>
+                        </div>
+                        <ul class="nav navbar-nav">
+                            <li><a asp-area="" asp-controller="Apartments" asp-action="About">About</a></li>
+                            <li><a asp-area="" asp-controller="Apartments" asp-action="Contact">Contact</a></li>
+                        </ul>
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
