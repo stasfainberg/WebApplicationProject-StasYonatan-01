@@ -9,20 +9,24 @@
 <div>
     @using (Html.BeginForm("ShowMalfExtraDetails", "Malfunctions", FormMethod.Get))
     {
-            <div>
-                <label for="create-date">Date/time:</label>
-                <input type="datetime-local" id="create-date"
-                       name="create-date"
-                       min="2016-01-01T00:00" max="2024-01-01T00:00" />
-            </div>
-            <span>Status: </span> @Html.DropDownList("Status", new List<SelectListItem> { new SelectListItem { Value = "0" , Text ="Open" },
-                                                     new SelectListItem { Value = "1" , Text ="Closed" },
-                                                     new SelectListItem { Value = "2" , Text ="In Progress" }}, "Please choose status")
-            <input type="text" class="search-query" placeholder="Address" id="address" />
-            <input type="text" class="search-query" placeholder="name" id="user-name" />
-            <input type="submit" value="Search" />
+        <div>
+            <label for="create-date">Date/time:</label>
+            <input type="datetime-local" id="createDate"
+                   name="createDate"
+                   min="2016-01-01T00:00" max="2024-01-01T00:00" />
+        </div><br />
+        <span>status: </span> @Html.DropDownList("Status", new List<SelectListItem> { new SelectListItem { Value = "0" , Text ="Open" },
+                new SelectListItem { Value = "1" , Text ="Closed" },
+                new SelectListItem { Value = "2" , Text ="In Progress" }}, "Please choose status")<br />
+        <br />
+        <p>address: @Html.TextBox("address")</p> <br />
+        <p>user name: @Html.TextBox("userName")</p> <br />
+        <button class="search-button" type="submit">
+            <i class="fa fa-search"></i>
+        </button>
     }
- </div>
+
+</div>
 
 <br/>
     <table class="table">
@@ -47,7 +51,7 @@
                     @Html.DisplayNameFor(model => model.AppartmentAddress)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.userName)
+                    @Html.DisplayNameFor(model => model.UserName)
                 </th>
                 <th></th>
             </tr>
@@ -76,7 +80,7 @@
                         @Html.DisplayFor(modelItem => item.AppartmentAddress)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.userName)
+                        @Html.DisplayFor(modelItem => item.UserName)
                     </td>
                 </tr>
             }

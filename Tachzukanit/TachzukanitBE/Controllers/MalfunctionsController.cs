@@ -27,13 +27,13 @@ namespace TachzukanitBE.Controllers
                                                               String address, String userName)
         {
 
+
             var q = from malfunction in _context.Malfunction
                     join appartments in _context.Apartment on malfunction.CurrentApartment.ApartmentId equals appartments.ApartmentId
                     join users in _context.User on malfunction.RequestedBy.Id equals users.Id
-                    where malfunction.CreationDate >= createDate &&
-                          malfunction.Status.ToString().Equals(status) &&
+                    where malfunction.Status.Equals(status) &&
                           malfunction.CurrentApartment.Address.Equals(address) &&
-                          malfunction.RequestedBy.FullName.Equals(userName)
+                          malfunction.RequestedBy.FullName.Contains(userName)
                     select new ExtraDetailsMalfunctionsVM()
                     {
                         Title = malfunction.Title,
@@ -42,20 +42,12 @@ namespace TachzukanitBE.Controllers
                         CreationDate = malfunction.CreationDate,
                         ModifiedDate = malfunction.ModifiedDate,
                         AppartmentAddress = appartments.Address,
-                        userName = users.FullName
+                        UserName = users.FullName
                     };
+            //malfunction.CreationDate >= createDate &&
 
             return View(await q.ToListAsync());
         }
-
-        // Get date
-        //public async Task<IActionResult> CurrentDate()
-        //{
-        //    CurrentDate currDate = new CurrentDate();
-        //    currDate.Date = DateTime.Today;
-
-        //    return View(currDate);
-        //}
 
         // GET: Malfunctions
         public async Task<IActionResult> Index()
