@@ -23,17 +23,19 @@ namespace TachzukanitBE.Controllers
 
         // POST: Get malfunctions parameters from the user and search in server
         //       it shows the malfunctions details and also user name, appartment password
-        public async Task<IActionResult> ShowMalfExtraDetails(DateTime createDate, String status,
+        public async Task<IActionResult> ShowMalfExtraDetails(DateTime createDate, Status status,
                                                               String address, String userName)
         {
+            Status enumStatus = (Status)status;
 
 
             var q = from malfunction in _context.Malfunction
-                    join appartments in _context.Apartment on malfunction.CurrentApartment.ApartmentId equals appartments.ApartmentId
-                    join users in _context.User on malfunction.RequestedBy.Id equals users.Id
-                    where malfunction.Status.Equals(status) &&
-                          malfunction.CurrentApartment.Address.Equals(address) &&
-                          malfunction.RequestedBy.FullName.Contains(userName)
+                    join appartments in _context.Apartment on malfunction.CurrentApartment equals appartments
+                    join users in _context.User on malfunction.RequestedBy equals users
+                    where malfunction.CreationDate >= createDate &&
+                          malfunction.Status.Equals(enumStatus) &&
+                          appartments.Address.Equals(address) /*&&
+                          malfunction.RequestedBy.FullName.Contains(userName)*/
                     select new ExtraDetailsMalfunctionsVM()
                     {
                         Title = malfunction.Title,
@@ -44,7 +46,6 @@ namespace TachzukanitBE.Controllers
                         AppartmentAddress = appartments.Address,
                         UserName = users.FullName
                     };
-            //malfunction.CreationDate >= createDate &&
 
             return View(await q.ToListAsync());
         }

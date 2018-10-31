@@ -15,9 +15,9 @@
                    name="createDate"
                    min="2016-01-01T00:00" max="2024-01-01T00:00" />
         </div><br />
-        <span>status: </span> @Html.DropDownList("Status", new List<SelectListItem> { new SelectListItem { Value = "0" , Text ="Open" },
-                new SelectListItem { Value = "1" , Text ="Closed" },
-                new SelectListItem { Value = "2" , Text ="In Progress" }}, "Please choose status")<br />
+        <span>status: </span> @Html.DropDownList("Status", new List<SelectListItem> { new SelectListItem { Value ="Open" , Text ="Open" },
+                new SelectListItem { Value = "Closed" , Text ="Closed" },
+                new SelectListItem { Value = "InProgress" , Text ="In Progress" }}, "Please choose status")<br />
         <br />
         <p>address: @Html.TextBox("address")</p> <br />
         <p>user name: @Html.TextBox("userName")</p> <br />
