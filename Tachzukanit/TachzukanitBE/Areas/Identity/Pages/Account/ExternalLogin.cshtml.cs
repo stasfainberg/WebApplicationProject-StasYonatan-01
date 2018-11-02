@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using TachzukanitBE.Models;
 
@@ -107,6 +108,12 @@ namespace TachzukanitBE.Areas.Identity.Pages.Account
                         Email = info.Principal.FindFirstValue(ClaimTypes.Email)
                     };
                 }
+
+                // Getting the roles options
+                var roles = from eUserRoles usrl in Enum.GetValues(typeof(eUserRoles))
+                    select new { Value = usrl.ToString(), Text = usrl.ToString() };
+                ViewData["Roles"] = new SelectList(roles, "Value", "Text");
+
                 return Page();
             }
         }

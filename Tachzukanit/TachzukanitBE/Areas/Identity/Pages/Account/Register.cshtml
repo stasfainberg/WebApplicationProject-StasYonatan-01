@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.SelectedRole"></label>
-                <input asp-for="Input.SelectedRole" class="form-control" />
+                <select asp-for="Input.SelectedRole" class="form-control" asp-items="ViewBag.Roles" }></select>
                 <span asp-validation-for="Input.SelectedRole" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-default">Register</button>

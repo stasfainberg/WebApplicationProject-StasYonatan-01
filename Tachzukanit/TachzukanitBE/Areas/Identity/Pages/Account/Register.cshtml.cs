@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -67,8 +68,12 @@ namespace TachzukanitBE.Areas.Identity.Pages.Account
         }
         
         public void OnGet(string returnUrl = null)
-        {
+        {			
+            var roles = from eUserRoles usrl in Enum.GetValues(typeof(eUserRoles))
+                           select new { Value = usrl.ToString(), Text = usrl.ToString() };
+            ViewData["Roles"] = new SelectList(roles, "Value", "Text");
             ReturnUrl = returnUrl;
+			
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
