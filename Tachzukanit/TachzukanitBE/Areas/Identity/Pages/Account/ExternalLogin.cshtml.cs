@@ -19,15 +19,18 @@ namespace TachzukanitBE.Areas.Identity.Pages.Account
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<ExternalLoginModel> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public ExternalLoginModel(
             SignInManager<User> signInManager,
             UserManager<User> userManager,
-            ILogger<ExternalLoginModel> logger)
+            ILogger<ExternalLoginModel> logger,
+            RoleManager<IdentityRole> roleManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -39,12 +42,18 @@ namespace TachzukanitBE.Areas.Identity.Pages.Account
 
         [TempData]
         public string ErrorMessage { get; set; }
+        public RoleManager<IdentityRole> RoleManager { get; }
 
         public class InputModel
         {
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Role")]
+            public string SelectedRole { get; set; }
         }
 
         public IActionResult OnGetAsync()
@@ -119,12 +128,23 @@ namespace TachzukanitBE.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    result = await _userManager.AddLoginAsync(user, info);
+
+                    // Checking if the selected role is available
+                    if (!_roleManager.RoleExistsAsync(Input.SelectedRole).Result)
+                        Input.SelectedRole = eUserRoles.Guide.ToString();
+
+                    // Adding the role to the new user
+                    result = _userManager.AddToRoleAsync(user, Input.SelectedRole).Result;
+
                     if (result.Succeeded)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                        return LocalRedirect(returnUrl);
+                        result = await _userManager.AddLoginAsync(user, info);
+                        if (result.Succeeded)
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                            return LocalRedirect(returnUrl);
+                        }
                     }
                 }
                 foreach (var error in result.Errors)

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TachzukanitBE.Data;
 using TachzukanitBE.Models;
+using TachzukanitBE.Services;
 using TachzukanitBE.ViewModels;
 
 namespace TachzukanitBE.Controllers
@@ -58,6 +60,7 @@ namespace TachzukanitBE.Controllers
         //}
 
         // GET: Malfunctions
+        [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]
         public async Task<IActionResult> Index()
         {
             var databaseContext = _context.Malfunction.Include(p => p.CurrentApartment).Include(ps => ps.RequestedBy);
@@ -65,6 +68,7 @@ namespace TachzukanitBE.Controllers
         }
 
         // GET: Malfunctions/Details/5
+        [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -83,6 +87,7 @@ namespace TachzukanitBE.Controllers
         }
 
         // GET: Malfunctions/Create
+        [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]
         public async Task<IActionResult> Create()
         {
             var apartments = from apt in _context.Apartment.Include(s => s.malfunctions)
@@ -106,6 +111,7 @@ namespace TachzukanitBE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]
         public async Task<IActionResult> Create([Bind("CurrentApartment")]int CurrentApartment, [Bind("RequestedBy")]string RequestedBy, [Bind("MalfunctionId,Status,Title,Content,Resources,CreationDate,ModifiedDate,CurrentApartmentId,RequestedById")] Malfunction malfunction)
         {            
             if (ModelState.IsValid)
@@ -143,6 +149,7 @@ namespace TachzukanitBE.Controllers
         }
 
         // GET: Malfunctions/Edit/5
+        [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -163,6 +170,7 @@ namespace TachzukanitBE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]
         public async Task<IActionResult> Edit(string id, [Bind("MalfunctionId,Status,Title,Content,Resources,CreationDate,ModifiedDate")] Malfunction malfunction)
         {
             if (id != malfunction.MalfunctionId)
@@ -194,6 +202,7 @@ namespace TachzukanitBE.Controllers
         }
 
         // GET: Malfunctions/Delete/5
+        [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
