@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,10 +25,14 @@ namespace TachzukanitBE.Controllers
         }
 
         // GET: Apartments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(String searchString)
         {
-            //return RedirectToAction("Index", "HomeController", await _context.Apartment.ToListAsync());
-            return View(await _context.Apartment.ToListAsync());
+            if (String.IsNullOrEmpty(searchString))
+            {
+                return View(await _context.Apartment.ToListAsync());
+            }
+
+            return View(await _context.Apartment.Where(a => a.Address.Contains(searchString)).ToListAsync());
         }
 
         // GET: Apartments/Details/5
