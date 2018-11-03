@@ -15,6 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using TachzukanitBE.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using TachzukanitBE.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace TachzukanitBE
 {
@@ -34,7 +37,7 @@ namespace TachzukanitBE
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.MinimumSameSitePolicy = SameSiteMode.None;                
             });
 
             services.Configure<IdentityOptions>(options =>
@@ -64,6 +67,7 @@ namespace TachzukanitBE
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<User, IdentityRole>()
+                .AddDefaultUI()
                 .AddEntityFrameworkStores<TachzukanitDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -85,7 +89,7 @@ namespace TachzukanitBE
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider service)
         {
             if (env.IsDevelopment())
             {
@@ -101,7 +105,6 @@ namespace TachzukanitBE
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
             app.UseAuthentication();
 
             app.UseMvc(routes =>
@@ -110,6 +113,28 @@ namespace TachzukanitBE
                     name: "default",
                     template: "{controller=Apartments}/{action=Index}/{id?}");
             });
+
+            CreateUserRoles(service);
+        }
+
+        private void CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            IdentityResult roleResult;
+
+            foreach (var role in Enum.GetValues(typeof(eUserRoles)))
+            {
+                var currentRole = role.ToString();
+
+                //Adding all Roles if the don't exist in DB
+                var roleCheck = RoleManager.RoleExistsAsync(currentRole).Result;
+                if (!roleCheck)
+                {
+                    //create the roles and seed them to the database  
+                    roleResult = RoleManager.CreateAsync(new IdentityRole(currentRole)).Result;
+                }
+            }
         }
     }
 }
