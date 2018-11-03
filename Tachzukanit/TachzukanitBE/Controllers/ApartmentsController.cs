@@ -18,10 +18,13 @@ namespace TachzukanitBE.Controllers
     public class ApartmentsController : Controller
     {
         private readonly TachzukanitDbContext _context;
+        private readonly IHostingEnvironment he;
 
-        public ApartmentsController(TachzukanitDbContext context)
+
+        public ApartmentsController(TachzukanitDbContext context, IHostingEnvironment e)
         {
             _context = context;
+            he = e;
         }
 
         // GET: Apartments
@@ -67,16 +70,44 @@ namespace TachzukanitBE.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("ApartmentId,Address,Photo,RoomsNumber")] Apartment apartment)
+        public async Task<IActionResult> Create([Bind("ApartmentId,Address,Photo,RoomsNumber")] Apartment apartment, IFormFile files)
         {
             if (ModelState.IsValid)
             {
+                // Getting the long lat
+                var location = AddLngLat(apartment);
+                apartment.Latitude = location.Item1;
+                apartment.Longitude = location.Item2;
+
+                SavePhoto(apartment, files);
                 _context.Add(apartment);
+                //apartment.Photo = UploadFile(file).Result;
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(apartment);
         }
+
+        private void SavePhoto(Apartment apartment, IFormFile files)
+        {
+            if (files != null)
+            {
+                var fileName = Path.Combine(he.WebRootPath+"/images/apartments", Path.GetFileName(files.FileName));
+                files.CopyTo(new FileStream(fileName, FileMode.Create));
+                apartment.Photo = "\\images\\apartments\\" + files.FileName;
+            }
+        }
+
+        //private async Task<string> UploadFile(IFormFile file)
+        //{
+        //    // full path to file in temp location
+        //    var filePath = "~/images/Apartments/" + file.FileName;
+        //    using (var stream = new FileStream(filePath, FileMode.Create))
+        //    {
+        //        await file.CopyToAsync(stream);
+        //    }
+        //    return filePath;
+        //}
 
         // GET: Apartments/Edit/5
         [Authorize(Roles = "Admin")]
