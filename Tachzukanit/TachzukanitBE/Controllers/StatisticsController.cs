@@ -20,6 +20,7 @@ namespace TachzukanitBE.Controllers
         }
         public ActionResult Index(string address)
         {
+            // Query for bar graph
             var q = from malfunctions in _context.Malfunction
                     join apartments in _context.Apartment on malfunctions.CurrentApartment equals apartments
                     where apartments.Address.Equals(address)
@@ -29,9 +30,10 @@ namespace TachzukanitBE.Controllers
                         month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(groupMalfunctions.First().CreationDate.Month),
                         count = groupMalfunctions.Count()
                     };
-            //CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(((Malfunction)groupMalfunctions).CreationDate.Month)
-            var malfunctionCount = new List<dynamic>();
 
+            var malfunctionCount = new List<dynamic>();
+            
+            // Creating list for graph
             foreach (var malfunctions in q)
             {
                 malfunctionCount.Add(malfunctions);

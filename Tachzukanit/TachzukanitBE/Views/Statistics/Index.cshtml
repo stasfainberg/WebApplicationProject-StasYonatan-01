@@ -9,6 +9,7 @@
     <p>The following chart represents the number of malfunctions according to their status</p>
     <div id="tooltip"></div>
     <div class="pie"></div>
+    <br />
 </div>
 
 @using (Html.BeginForm("Index", "Statistics", FormMethod.Post))
@@ -157,6 +158,6 @@
     // difficulties = JSON.parse('@Html.Raw(ViewBag.blabla)');
     //drawPie(difficulties);
 
-    var ingredients = JSON.parse('@Html.Raw(ViewBag.Count)');
-    drawBar(ingredients);
+    var monthCount = JSON.parse('@Html.Raw(ViewBag.Count)');
+        drawBar(monthCount);
     </script>
