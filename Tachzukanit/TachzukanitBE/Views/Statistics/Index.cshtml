@@ -1,97 +1,22 @@
-﻿@model IEnumerable<TachzukanitBE.ViewModels.ExtraDetailsMalfunctionsVM>
-
+﻿
 @{
-    ViewData["Title"] = "Manager Screen";
+    ViewData["Title"] = "Statistics";
 }
 
-<h2>Manager Screen</h2>
-<br />
-<div>
-    @using (Html.BeginForm("ShowMalfExtraDetails", "Malfunctions", FormMethod.Post))
-    {
-        <div>
-            <label for="create-date">Date/time:</label>
-            <input type="datetime-local" id="createDate"
-                   name="createDate"
-                   min="2016-01-01T00:00" max="2024-01-01T00:00" />
-        </div><br />
-        <span>status: </span> @Html.DropDownList("Status", new List<SelectListItem> { new SelectListItem { Value ="Open" , Text ="Open" },
-new SelectListItem { Value = "Closed" , Text ="Closed" },
-new SelectListItem { Value = "InProgress" , Text ="In Progress" }}, "Please choose status")<br />
-        <br />
-        <p>address: @Html.TextBox("address")</p> <br />
-        <p>user name: @Html.TextBox("userName")</p> <br />
-        <button class="search-button" type="submit">
-            <i class="fa fa-search"></i>
-        </button>
-    }
-
+<h2>Statistics</h2>
+<div class="stat-chart">
+    <h3>Malfunctions status</h3><br />
+    <p>The following chart represents the number of malfunctions according to their status</p>
+    <div id="tooltip"></div>
+    <div class="pie"></div>
 </div>
-
-<br />
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppartmentAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Content)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreationDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ModifiedDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AppartmentAddress)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
 <div class="stat-chart">
-    <h3>Malfunctions per Month</h3><br />
-    <p>The following chart shows the number of malfunction per month according to the following address</p>
+    <h3>Malfunctions by month</h3><br />
+    <p>The following chart shows the number of malfunctions per month for the following address</p>
     <div class="bar"></div>
 </div>
+
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
 
@@ -200,8 +125,8 @@ new SelectListItem { Value = "InProgress" , Text ="In Progress" }}, "Please choo
         var bars =  svg.selectAll(".bar")
              .data(jsonData)
            .enter().append("rect")
-             .attr("class", "bar")
-             .attr("x", function (d) { return x(d.month); })
+            .attr("class", "bar")
+            .attr("x", function (d) { return x(d.month); })
              .attr("width", x.bandwidth())
              .attr("y", function (d) { return y(d.count); })
              .attr("height", function (d) { return height - y(d.count); })
@@ -221,8 +146,8 @@ new SelectListItem { Value = "InProgress" , Text ="In Progress" }}, "Please choo
               .attr("dy", "-35px")
               .text("Calories");
     }
-    var difficulties = JSON.parse('@Html.Raw(ViewBag.blabla)');
-    drawPie(difficulties);
+    // difficulties = JSON.parse('@Html.Raw(ViewBag.blabla)');
+    //drawPie(difficulties);
 
     var ingredients = JSON.parse('@Html.Raw(ViewBag.Count)');
     drawBar(ingredients);
