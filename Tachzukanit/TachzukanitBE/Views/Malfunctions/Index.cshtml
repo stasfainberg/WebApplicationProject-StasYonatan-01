@@ -82,10 +82,10 @@
                     @Html.DisplayFor(modelItem => item.ModifiedDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CurrentApartment)
+                    @Html.DisplayFor(modelItem => item.CurrentApartment.Address)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RequestedBy)
+                    @Html.DisplayFor(modelItem => item.RequestedBy.Email)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.MalfunctionId">Edit</a> |
