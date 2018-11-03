@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using TachzukanitBE.Data;
+using TachzukanitBE.Models;
 
 namespace TachzukanitBE.Controllers
 {
@@ -24,7 +26,7 @@ namespace TachzukanitBE.Controllers
                     group malfunctions by malfunctions.CreationDate.Month into groupMalfunctions
                     select new
                     {
-                        month = groupMalfunctions.First().CreationDate.Month,
+                        month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(groupMalfunctions.First().CreationDate.Month),
                         count = groupMalfunctions.Count()
                     };
             //CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(((Malfunction)groupMalfunctions).CreationDate.Month)
