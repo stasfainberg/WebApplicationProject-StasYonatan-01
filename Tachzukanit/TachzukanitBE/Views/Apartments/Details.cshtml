@@ -35,3 +35,24 @@
     <a asp-action="Delete" asp-route-id="@Model.ApartmentId">מחיקה</a> |
     <a asp-action="Index">חזרה</a>
 </div>
+<div>
+    <h3>Apartment's location</h3>
+    <div id="map" style="position:relative;width:100%;height:500px;">></div>
+</div>
+
+<script>
+    function initMap() {
+        // The location of Uluru
+        var uluru = { lat: @Model.Latitude, lng: @Model.Longitude };
+
+        // The map, centered at Uluru
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: uluru
+        });
+
+        // The marker, positioned at Uluru
+        var marker = new google.maps.Marker({position: uluru, map: map});
+
+    }
+</script>

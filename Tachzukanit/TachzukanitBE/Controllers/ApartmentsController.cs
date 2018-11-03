@@ -63,11 +63,22 @@ namespace TachzukanitBE.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Getting the long lat
+                var location = AddLngLat(apartment);
+                apartment.Latitude = location.Item1;
+                apartment.Longitude = location.Item2;
+
                 _context.Add(apartment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(apartment);
+        }
+
+        private Tuple<float, float> AddLngLat(Apartment apartment)
+        {
+            var res = new Tuple<float, float>(32.1637206f, 34.8647352f);
+            return res;
         }
 
         // GET: Apartments/Edit/5
