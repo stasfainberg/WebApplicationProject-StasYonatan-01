@@ -11,16 +11,22 @@
     <div class="pie"></div>
 </div>
 
-<div class="stat-chart">
-    <h3>Malfunctions by month</h3><br />
-    <p>The following chart shows the number of malfunctions per month for the following address</p>
-    <div class="bar"></div>
-</div>
+@using (Html.BeginForm("Index", "Statistics", FormMethod.Post))
+{
+    <div class="stat-chart">
+        <h3>Malfunctions by month</h3><br />
+        <p>The following chart shows the number of malfunctions per month for the following address</p>
+        <p>address: @Html.TextBox("address")</p> <br />
+        <button class="search-button" type="submit">
+            <i class="fa fa-search"></i>
+        </button>
+        <div class="bar"></div>
+    </div>
+}
 
+    <script src="https://d3js.org/d3.v4.min.js"></script>
 
-<script src="https://d3js.org/d3.v4.min.js"></script>
-
-<script>
+    <script>
 
     // draw a pie
     function drawPie(jsonData) {
@@ -151,4 +157,4 @@
 
     var ingredients = JSON.parse('@Html.Raw(ViewBag.Count)');
     drawBar(ingredients);
-</script>
+    </script>

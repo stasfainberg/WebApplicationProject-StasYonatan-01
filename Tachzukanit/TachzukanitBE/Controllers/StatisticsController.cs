@@ -16,9 +16,8 @@ namespace TachzukanitBE.Controllers
         {
             _context = context;
         }
-        public ActionResult Index()
+        public ActionResult Index(string address)
         {
-            string address = "המכללה למנהל";
             var q = from malfunctions in _context.Malfunction
                     join apartments in _context.Apartment on malfunctions.CurrentApartment equals apartments
                     where apartments.Address.Equals(address)
