@@ -34,6 +34,15 @@
                 <div class="myDropdown_navbar">
                     <div class="myDropdown_dropdown">
                         <button class="myDropdown_dropbtn">
+                            User
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="myDropdown_dropdown-content">
+                            <a asp-area="" asp-controller="Users" asp-action="#">Show All</a>
+                        </div>
+                    </div>
+                    <div class="myDropdown_dropdown">
+                        <button class="myDropdown_dropbtn">
                             Apartment
                             <i class="fa fa-caret-down"></i>
                         </button>
@@ -42,23 +51,21 @@
                             <a asp-area="" asp-controller="Apartments" asp-action="Index">Show All</a>
                         </div>
                     </div>
-                    <div class="myDropdown_navbar">
-                        <div class="myDropdown_dropdown">
-                            <button class="myDropdown_dropbtn">
-                                Malfunction
-                                <i class="fa fa-caret-down"></i>
-                            </button>
-                            <div class="myDropdown_dropdown-content">
-                                <a asp-area="" asp-controller="Malfunctions" asp-action="Create">Create New</a>
-                                <a asp-area="" asp-controller="Malfunctions" asp-action="Index">Show All</a>
-                            </div>
+                    <div class="myDropdown_dropdown">
+                        <button class="myDropdown_dropbtn">
+                            Malfunction
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="myDropdown_dropdown-content">
+                            <a asp-area="" asp-controller="Malfunctions" asp-action="Create">Create New</a>
+                            <a asp-area="" asp-controller="Malfunctions" asp-action="Index">Show All</a>
                         </div>
-                        <ul class="nav navbar-nav">
-                            <li><a asp-area="" asp-controller="Apartments" asp-action="About">About</a></li>
-                            <li><a asp-area="" asp-controller="Apartments" asp-action="Contact">Contact</a></li>
-                        </ul>
-                        <partial name="_LoginPartial" />
                     </div>
+                    <ul class="nav navbar-nav">
+                        <li><a asp-area="" asp-controller="Apartments" asp-action="About">About</a></li>
+                        <li><a asp-area="" asp-controller="Apartments" asp-action="Contact">Contact</a></li>
+                    </ul>
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </div>
