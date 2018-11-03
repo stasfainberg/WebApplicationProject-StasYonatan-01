@@ -69,6 +69,11 @@ namespace TachzukanitBE.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Getting the long lat
+                var location = AddLngLat(apartment);
+                apartment.Latitude = location.Item1;
+                apartment.Longitude = location.Item2;
+
                 SavePhoto(apartment, files);
                 _context.Add(apartment);
                 //apartment.Photo = UploadFile(file).Result;
