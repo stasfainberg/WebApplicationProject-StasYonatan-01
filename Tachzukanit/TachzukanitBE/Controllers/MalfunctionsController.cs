@@ -61,10 +61,16 @@ namespace TachzukanitBE.Controllers
 
         // GET: Malfunctions
         [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(String searchString)
         {
             var databaseContext = _context.Malfunction.Include(p => p.CurrentApartment).Include(ps => ps.RequestedBy);
-            return View(await databaseContext.ToListAsync());
+
+            if (String.IsNullOrEmpty(searchString))
+            {
+                return View(await databaseContext.ToListAsync());
+            }
+
+            return View(await databaseContext.Where(m => m.Content.Contains(searchString)).ToListAsync());
         }
 
         // GET: Malfunctions/Details/5
