@@ -20,10 +20,13 @@ namespace TachzukanitBE.Controllers
     public class ApartmentsController : Controller
     {
         private readonly TachzukanitDbContext _context;
+        private readonly IHostingEnvironment he;
 
-        public ApartmentsController(TachzukanitDbContext context)
+
+        public ApartmentsController(TachzukanitDbContext context, IHostingEnvironment e)
         {
             _context = context;
+            he = e;
         }
 
         // GET: Apartments
@@ -64,7 +67,7 @@ namespace TachzukanitBE.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("ApartmentId,Address,Photo,RoomsNumber")] Apartment apartment)
+        public async Task<IActionResult> Create([Bind("ApartmentId,Address,Photo,RoomsNumber")] Apartment apartment, IFormFile files)
         {
             if (ModelState.IsValid)
             {
@@ -73,7 +76,9 @@ namespace TachzukanitBE.Controllers
                 apartment.Latitude = location.Result.Latitude;
                 apartment.Longitude = location.Result.Longitude;
 
+                SavePhoto(apartment, files);
                 _context.Add(apartment);
+                //apartment.Photo = UploadFile(file).Result;
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -83,7 +88,7 @@ namespace TachzukanitBE.Controllers
         private async Task<MapPoint> AddLongLatAsync(string apartmentAddress)
         {
             MapPoint point;
-            
+
             // Getting the location of the address
             try
             {
@@ -106,6 +111,16 @@ namespace TachzukanitBE.Controllers
             }
 
             return point;
+        }
+
+        private void SavePhoto(Apartment apartment, IFormFile files)
+        {
+            if (files != null)
+            {
+                var fileName = Path.Combine(he.WebRootPath+"/images/apartments", Path.GetFileName(files.FileName));
+                files.CopyTo(new FileStream(fileName, FileMode.Create));
+                apartment.Photo = "\\images\\apartments\\" + files.FileName;
+            }
         }
 
         // GET: Apartments/Edit/5

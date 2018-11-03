@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
+    <Folder Include="wwwroot\images\apartments\" />
   </ItemGroup>
 
   <ItemGroup>
