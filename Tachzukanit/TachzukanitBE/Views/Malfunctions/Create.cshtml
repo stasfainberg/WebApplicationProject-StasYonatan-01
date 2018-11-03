@@ -3,7 +3,11 @@
 @{
     ViewData["Title"] = "Create";
 }
-
+@section Scripts
+    {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link rel="stylesheet" href="~/css/main.css" />
+}
 <h2>Create</h2>
 
 <h4>Malfunction</h4>
@@ -60,9 +64,8 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">
+        <i class="fa fa-arrow-left"></i>
+    </a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

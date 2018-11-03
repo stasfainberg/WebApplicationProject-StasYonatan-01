@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = "Delete";
 }
+@section Scripts
+    {
+    <link rel="stylesheet" href="~/css/main.css" />
+}
 
 <h2>Delete</h2>
 
@@ -48,7 +52,7 @@
             @Html.DisplayFor(model => model.ModifiedDate)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="MalfunctionId" />
         <input type="submit" value="Delete" class="btn btn-default" /> |

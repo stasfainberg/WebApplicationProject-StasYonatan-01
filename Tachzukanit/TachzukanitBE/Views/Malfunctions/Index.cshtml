@@ -10,13 +10,8 @@
     <link rel="stylesheet" href="~/css/search.css" />
 }
 
-<h2>Index</h2>
+<h2>Malfunctions</h2>
 
-<br />
-<br />
-<br />
-<br />
-<br />
 <form asp-controller="Malfunctions" asp-action="Index" method="get">
     <div class="search">
         <input name="SearchString" type="text" class="search-query" placeholder="Search" />
@@ -27,7 +22,9 @@
 </form>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">
+        <i class="fa fa-plus fa-2x"></i>
+    </a>
 </p>
 <table class="table">
     <thead>
@@ -88,9 +85,15 @@
                     @Html.DisplayFor(modelItem => item.RequestedBy.Email)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.MalfunctionId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.MalfunctionId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.MalfunctionId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.MalfunctionId">
+                        <i class="fa fa-edit"></i>    
+                    </a> |
+                    <a asp-action="Details" asp-route-id="@item.MalfunctionId">
+                        <i class="fa fa-info"></i>
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.MalfunctionId">
+                        <i class="fa fa-trash"></i>
+                    </a>
                 </td>
             </tr>
         }

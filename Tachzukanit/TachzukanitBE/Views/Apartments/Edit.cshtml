@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = "Edit";
 }
+@section Scripts
+    {
+    <link rel="stylesheet" href="~/assets/css/main.css" />
+}
 
 <h2>Edit</h2>
 
@@ -36,7 +40,9 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">
+        <i class="fa fa-arrow-left"></i>
+    </a>
 </div>
 
 @section Scripts {

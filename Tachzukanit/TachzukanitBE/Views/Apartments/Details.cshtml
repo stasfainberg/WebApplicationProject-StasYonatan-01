@@ -4,6 +4,11 @@
     ViewData["Title"] = "Details";
 }
 
+@section Scripts
+    {
+    <link rel="stylesheet" href="~/css/main.css" />
+}
+
 <h2>Details</h2>
 
 <div>
@@ -20,7 +25,7 @@
             @Html.DisplayNameFor(model => model.Photo)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Photo)
+            <img src="@Url.Content(Model.Photo)" />
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.RoomsNumber)
@@ -31,75 +36,87 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ApartmentId">Edit</a> |
-    <a asp-action="Delete" asp-route-id="@Model.ApartmentId">Delete</a> |
-    <a asp-action="Index">Back</a>
+    <a asp-action="Edit" asp-route-id="@Model.ApartmentId">
+        <i class="fa fa-edit"></i>
+    </a> |
+    <a asp-action="Delete" asp-route-id="@Model.ApartmentId">
+        <i class="fa fa-trash"></i>
+    </a> |
+    <a asp-action="Index">
+        <i class="fa fa-arrow-left"></i>
+    </a>
 </div>
 
-    <table class="table">
-        <thead>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Status
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Content
+            </th>
+            <th>
+                Resources
+            </th>
+            <th>
+                CreationDate
+            </th>
+            <th>
+                ModifiedDate
+            </th>
+            <th>
+                CurrentApartment
+            </th>
+            <th>
+                RequestedBy
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.malfunctions)
+        {
             <tr>
-                <th>
-                    Status
-                </th>
-                <th>
-                    Title
-                </th>
-                <th>
-                    Content
-                </th>
-                <th>
-                    Resources
-                </th>
-                <th>
-                    CreationDate
-                </th>
-                <th>
-                    ModifiedDate
-                </th>
-                <th>
-                    CurrentApartment
-                </th>
-                <th>
-                    RequestedBy
-                </th>
-                <th></th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Resources)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentApartment.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequestedBy.Email)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MalfunctionId">
+                        <i class="fa fa-edit"></i>
+                    </a> |
+                    <a asp-action="Details" asp-route-id="@item.MalfunctionId">
+                        <i class="fa fa-info"></i>
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.MalfunctionId">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.malfunctions)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Content)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Resources)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreationDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ModifiedDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CurrentApartment.Address)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RequestedBy.Email)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.MalfunctionId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.MalfunctionId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.MalfunctionId">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>
