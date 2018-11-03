@@ -31,7 +31,75 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ApartmentId">עריכה</a> |
-    <a asp-action="Delete" asp-route-id="@Model.ApartmentId">מחיקה</a> |
-    <a asp-action="Index">חזרה</a>
+    <a asp-action="Edit" asp-route-id="@Model.ApartmentId">Edit</a> |
+    <a asp-action="Delete" asp-route-id="@Model.ApartmentId">Delete</a> |
+    <a asp-action="Index">Back</a>
 </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Content
+                </th>
+                <th>
+                    Resources
+                </th>
+                <th>
+                    CreationDate
+                </th>
+                <th>
+                    ModifiedDate
+                </th>
+                <th>
+                    CurrentApartment
+                </th>
+                <th>
+                    RequestedBy
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.malfunctions)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Resources)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreationDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifiedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CurrentApartment.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RequestedBy.Email)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.MalfunctionId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.MalfunctionId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.MalfunctionId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

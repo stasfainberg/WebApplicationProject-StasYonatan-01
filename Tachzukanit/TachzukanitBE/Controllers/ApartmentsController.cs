@@ -43,8 +43,9 @@ namespace TachzukanitBE.Controllers
                 return NotFound();
             }
 
-            var apartment = await _context.Apartment
+            var apartment = await _context.Apartment.Include(x=> x.malfunctions)
                 .FirstOrDefaultAsync(m => m.ApartmentId == id);
+
             if (apartment == null)
             {
                 return NotFound();
