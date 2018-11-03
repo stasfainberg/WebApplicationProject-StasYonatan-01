@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using GoogleMaps.LocationServices;
+using GuigleAPI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -67,9 +69,9 @@ namespace TachzukanitBE.Controllers
             if (ModelState.IsValid)
             {
                 // Getting the long lat
-                var location = AddLngLat(apartment);
-                apartment.Latitude = location.Item1;
-                apartment.Longitude = location.Item2;
+                var location = AddLongLatAsync(apartment.Address);
+                apartment.Latitude = location.Result.Latitude;
+                apartment.Longitude = location.Result.Longitude;
 
                 _context.Add(apartment);
                 await _context.SaveChangesAsync();
@@ -78,10 +80,32 @@ namespace TachzukanitBE.Controllers
             return View(apartment);
         }
 
-        private Tuple<float, float> AddLngLat(Apartment apartment)
+        private async Task<MapPoint> AddLongLatAsync(string apartmentAddress)
         {
-            var res = new Tuple<float, float>(32.1637206f, 34.8647352f);
-            return res;
+            MapPoint point;
+            
+            // Getting the location of the address
+            try
+            {
+                GoogleGeocodingAPI.GoogleAPIKey = "AIzaSyDKp42W_7Sc_kcVimZm-pPKG2TCXeFdzto";
+                var result = await GoogleGeocodingAPI.GetCoordinatesFromAddressAsync(apartmentAddress);
+
+                point = new MapPoint
+                {
+                    Latitude = result.Item1,
+                    Longitude = result.Item2
+                };
+            }
+            catch (Exception ex)
+            {
+                point = new MapPoint
+                {
+                    Latitude = 32.1637206,
+                    Longitude = 34.8647352
+                };
+            }
+
+            return point;
         }
 
         // GET: Apartments/Edit/5
