@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TachzukanitBE.Data;
 using Microsoft.AspNetCore.Authorization;
+using TachzukanitBE.Models;
 
 namespace TachzukanitBE.Controllers
 {
@@ -62,6 +63,45 @@ namespace TachzukanitBE.Controllers
             return View(user);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(String id, [Bind("Id,FullName,Email,PhoneNumber,Address")] User user)
+        {
+            if (!id.Equals(user.Id))
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserExists(user.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(user);
+        }
+
+        private bool UserExists(String id)
+        {
+            return _context.User.Any(e => e.Id == id);
+        }
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(String id)
         {
@@ -79,5 +119,16 @@ namespace TachzukanitBE.Controllers
 
             return View(user);
         }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(String id)
+        {
+            var user = await _context.User.FindAsync(id);
+            _context.User.Remove(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
+
 }

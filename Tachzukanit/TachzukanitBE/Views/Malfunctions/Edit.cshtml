@@ -6,9 +6,10 @@
 @section Scripts
     {
     <link rel="stylesheet" href="~/css/main.css" />
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
-    <h2>Edit Malfunction</h2>
+<h2>Edit Malfunction</h2>
 
 <hr />
 <div class="row">
@@ -58,7 +59,3 @@
         <i class="fa fa-arrow-left"></i>
     </a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
