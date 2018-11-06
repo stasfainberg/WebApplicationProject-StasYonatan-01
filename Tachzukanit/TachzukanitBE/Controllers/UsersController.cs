@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc;
 using TachzukanitBE.Data;
 using Microsoft.AspNetCore.Authorization;
 using TachzukanitBE.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace TachzukanitBE.Controllers
 {
     public class UsersController : Controller
     {
+        private readonly UserManager<User> _userManager;
         private readonly TachzukanitDbContext _context;
 
-        public UsersController(TachzukanitDbContext context)
+        public UsersController(TachzukanitDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index(String searchString)
@@ -77,7 +80,11 @@ namespace TachzukanitBE.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    User dbUser = (User)_context.Users.First(u => u.Id == id);
+                    dbUser.PhoneNumber = user.PhoneNumber;
+                    dbUser.FullName = user.FullName;
+                    dbUser.Address = user.Address;
+                    _context.Update(dbUser);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
