@@ -4,10 +4,14 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+@section Scripts
+    {
+    <link rel="stylesheet" href="~/css/main.css" />
+}
+
+    <h2>Malfunction Details</h2>
 
 <div>
-    <h4>Malfunction</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -48,7 +52,12 @@
         </dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.MalfunctionId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.MalfunctionId">
+        <i class="fa fa-edit"></i>
+    </a> |
+    <a asp-action="Index">
+        <i class="fa fa-arrow-left"></i>
+    </a>
 </div>

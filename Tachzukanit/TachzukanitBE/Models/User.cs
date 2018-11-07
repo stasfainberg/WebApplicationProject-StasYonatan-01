@@ -31,4 +31,12 @@ namespace TachzukanitBE.Models
 
         #endregion
     }
+
+    public enum eUserRoles
+    {
+        Guide,
+        Janitor,
+        SocialWorker,
+        Admin
+    }
 }

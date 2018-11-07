@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TachzukanitBE.Data;
 
 namespace TachzukanitBE.Data.Migrations
 {
     [DbContext(typeof(TachzukanitDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181103100141_lng_lat_apartment")]
+    partial class lng_lat_apartment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,9 +197,9 @@ namespace TachzukanitBE.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<double>("Latitude");
+                    b.Property<float>("Latitude");
 
-                    b.Property<double>("Longitude");
+                    b.Property<float>("Longitude");
 
                     b.Property<string>("Photo");
 

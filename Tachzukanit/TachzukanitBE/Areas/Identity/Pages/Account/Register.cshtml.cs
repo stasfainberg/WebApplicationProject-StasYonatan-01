@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using TachzukanitBE.Models;
 
@@ -20,17 +22,20 @@ namespace TachzukanitBE.Areas.Identity.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -55,11 +60,20 @@ namespace TachzukanitBE.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
-        }
 
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Role")]
+            public string SelectedRole { get; set; }
+        }
+        
         public void OnGet(string returnUrl = null)
-        {
+        {			
+            var roles = from eUserRoles usrl in Enum.GetValues(typeof(eUserRoles))
+                           select new { Value = usrl.ToString(), Text = usrl.ToString() };
+            ViewData["Roles"] = new SelectList(roles, "Value", "Text");
             ReturnUrl = returnUrl;
+			
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -85,10 +99,25 @@ namespace TachzukanitBE.Areas.Identity.Pages.Account
 
                     // Confirming the mail.
                     // We cant really confirm the email address until we get the application on azure.
-                    var _res = _userManager.ConfirmEmailAsync(user, code).Result;
+                    result = _userManager.ConfirmEmailAsync(user, code).Result;
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+                    // Continues only if the mail was confirmed successfully
+                    if (result.Succeeded)
+                    {
+                        // Checking if the selected role is available
+                        if (!_roleManager.RoleExistsAsync(Input.SelectedRole).Result)
+                            Input.SelectedRole = eUserRoles.Guide.ToString();
+
+                        // Adding the role to the new user
+                        result = _userManager.AddToRoleAsync(user, Input.SelectedRole).Result;
+
+                        // Continues only if the role was added successfully
+                        if (result.Succeeded)
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
+                    }
                 }
                 foreach (var error in result.Errors)
                 {

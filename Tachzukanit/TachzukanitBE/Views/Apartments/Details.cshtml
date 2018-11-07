@@ -4,10 +4,14 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+@section Scripts
+    {
+    <link rel="stylesheet" href="~/css/main.css" />
+}
+
+    <h2>Apartment Details</h2>
 
 <div>
-    <h4>Apartment</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -20,7 +24,7 @@
             @Html.DisplayNameFor(model => model.Photo)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Photo)
+            <img src="@Url.Content(Model.Photo)" />
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.RoomsNumber)
@@ -31,7 +35,109 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ApartmentId">עריכה</a> |
-    <a asp-action="Delete" asp-route-id="@Model.ApartmentId">מחיקה</a> |
-    <a asp-action="Index">חזרה</a>
+    <a asp-action="Edit" asp-route-id="@Model.ApartmentId">
+        <i class="fa fa-edit"></i>
+    </a> |
+    <a asp-action="Delete" asp-route-id="@Model.ApartmentId">
+        <i class="fa fa-trash"></i>
+    </a> |
+    <a asp-action="Index">
+        <i class="fa fa-arrow-left"></i>
+    </a>
 </div>
+
+<div>
+    <h3>Apartment's location</h3>
+    <div id="map" style="position:relative;width:100%;height:500px;">></div>
+</div>
+
+<script>
+    function initMap() {
+        // The location of Uluru
+        var uluru = { lat: @Model.Latitude, lng: @Model.Longitude };
+
+        // The map, centered at Uluru
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: uluru
+        });
+
+        // The marker, positioned at Uluru
+        var marker = new google.maps.Marker({position: uluru, map: map});
+
+    }
+</script>
+
+<table class="table">
+<thead>
+    <tr>
+        <th>
+            Status
+        </th>
+        <th>
+            Title
+        </th>
+        <th>
+            Content
+        </th>
+        <th>
+            Resources
+        </th>
+        <th>
+            CreationDate
+        </th>
+        <th>
+            ModifiedDate
+        </th>
+        <th>
+            CurrentApartment
+        </th>
+        <th>
+            RequestedBy
+        </th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in Model.malfunctions)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Resources)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentApartment.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestedBy.Email)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MalfunctionId">
+                    <i class="fa fa-edit"></i>
+                </a> |
+                <a asp-action="Details" asp-route-id="@item.MalfunctionId">
+                    <i class="fa fa-info"></i>
+                </a> |
+                <a asp-action="Delete" asp-route-id="@item.MalfunctionId">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    }
+</tbody>
+</table>

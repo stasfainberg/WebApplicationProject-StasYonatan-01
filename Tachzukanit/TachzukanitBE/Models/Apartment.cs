@@ -18,6 +18,10 @@ namespace TachzukanitBE.Models
         [MaxLength(50)]
         public string Address { get; set; }
 
+        public double Longitude { get; set; }
+
+        public double Latitude { get; set; }
+
         public string Photo { get; set; }
 
         [Range(1, 30)]
