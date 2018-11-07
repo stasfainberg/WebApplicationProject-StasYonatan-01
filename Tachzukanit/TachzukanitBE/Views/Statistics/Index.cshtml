@@ -57,22 +57,22 @@
             .outerRadius(outerRadius);
 
         // create the svg canvas
-        var svg = d3.select('.pie')
-            .append('svg')
+        var svg = d3.select(".pie")
+            .append("svg")
             .attr('width', w)
             .attr('height', h);
 
         // set up groups of arcs
-        var arcs = svg.selectAll('g.arc')
+        var arcs = svg.selectAll("g.arc")
             .data(pie(jsonData))
             .enter()
-            .append('g')
-            .attr('class', 'arc')
-            .attr('transform', 'translate(' + outerRadius + ', ' + outerRadius + ')')
+            .append("g")
+            .attr("class", "arc")
+            .attr("transform", "translate(" + outerRadius + ', ' + outerRadius + ")")
             .on("mouseover", function (d) {
                 d3.select('#tooltip')
                     .style("visibility", "visible")
-                    .text('Status: ' + d.data.status);
+                    .text("Status: " + d.data.status);
             })
             .on("mousemove", function () {
                 d3.select('#tooltip')
