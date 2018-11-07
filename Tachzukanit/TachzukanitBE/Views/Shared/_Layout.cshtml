@@ -70,6 +70,7 @@
 
 
     <environment include="Development">
+        <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
@@ -79,6 +80,7 @@
 
     </environment>
     <environment exclude="Development">
+        <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery"

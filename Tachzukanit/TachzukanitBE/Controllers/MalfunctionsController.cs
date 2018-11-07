@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.NodeServices;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using TachzukanitBE.Data;
 using TachzukanitBE.Models;
 using TachzukanitBE.Services;
@@ -25,17 +28,20 @@ namespace TachzukanitBE.Controllers
 
         // POST: Get malfunctions parameters from the user and search in server
         //       it shows the malfunctions details and also user name, appartment password
-        public async Task<IActionResult> ShowMalfExtraDetails(DateTime createDate, String status,
-                                                              String address, String userName)
+        public async Task<IActionResult> ShowMalfExtraDetails(DateTime createDate, Status status,
+                                                              string address, string userName)
         {
 
+            Status enumStatus = (Status)status;
+
+
             var q = from malfunction in _context.Malfunction
-                    join appartments in _context.Apartment on malfunction.CurrentApartment.ApartmentId equals appartments.ApartmentId
-                    join users in _context.User on malfunction.RequestedBy.Id equals users.Id
+                    join apartments in _context.Apartment on malfunction.CurrentApartment equals apartments
+                    join users in _context.User on malfunction.RequestedBy equals users
                     where malfunction.CreationDate >= createDate &&
-                          malfunction.Status.ToString().Equals(status) &&
-                          malfunction.CurrentApartment.Address.Equals(address) &&
-                          malfunction.RequestedBy.FullName.Equals(userName)
+                          malfunction.Status.Equals(enumStatus) &&
+                          apartments.Address.Equals(address) /*&&
+                          malfunction.RequestedBy.FullName.Contains(userName)*/
                     select new ExtraDetailsMalfunctionsVM()
                     {
                         Title = malfunction.Title,
@@ -43,21 +49,12 @@ namespace TachzukanitBE.Controllers
                         Content = malfunction.Content,
                         CreationDate = malfunction.CreationDate,
                         ModifiedDate = malfunction.ModifiedDate,
-                        AppartmentAddress = appartments.Address,
-                        userName = users.FullName
+                        AppartmentAddress = apartments.Address,
+                        UserName = users.FullName
                     };
-
+            
             return View(await q.ToListAsync());
         }
-
-        // Get date
-        //public async Task<IActionResult> CurrentDate()
-        //{
-        //    CurrentDate currDate = new CurrentDate();
-        //    currDate.Date = DateTime.Today;
-
-        //    return View(currDate);
-        //}
 
         // GET: Malfunctions
         [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]
