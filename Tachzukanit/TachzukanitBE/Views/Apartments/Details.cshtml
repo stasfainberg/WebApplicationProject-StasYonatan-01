@@ -9,22 +9,34 @@
     <link rel="stylesheet" href="~/css/main.css" />
 }
 
+    <div style="float:right">
+        <a class="btn btn-default" asp-action="Index">
+            <i class="fa fa-arrow-left"></i> Back
+        </a> |
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.ApartmentId">
+            <i class="fa fa-edit"></i> Edit
+        </a> |
+        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.ApartmentId">
+            <i class="fa fa-trash-o fa-lg"></i> Delete
+        </a>
+    </div>
     <h2>Apartment Details</h2>
+    
 
 <div>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.Photo)
         </dt>
         <dd>
             <img src="@Url.Content(Model.Photo)" />
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.RoomsNumber)
@@ -34,17 +46,7 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ApartmentId">
-        <i class="fa fa-edit"></i>
-    </a> |
-    <a asp-action="Delete" asp-route-id="@Model.ApartmentId">
-        <i class="fa fa-trash"></i>
-    </a> |
-    <a asp-action="Index">
-        <i class="fa fa-arrow-left"></i>
-    </a>
-</div>
+
 
 <div>
     <h3>Apartment's location</h3>
@@ -127,14 +129,14 @@
                 @Html.DisplayFor(modelItem => item.RequestedBy.Email)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MalfunctionId">
+                <a class="btn btn-primary" asp-controller="Malfunctions" asp-action="Edit" asp-route-id="@item.MalfunctionId">
                     <i class="fa fa-edit"></i>
                 </a> |
-                <a asp-action="Details" asp-route-id="@item.MalfunctionId">
+                <a class="btn btn-primary" asp-controller="Malfunctions" asp-action="Details" asp-route-id="@item.MalfunctionId">
                     <i class="fa fa-info"></i>
                 </a> |
-                <a asp-action="Delete" asp-route-id="@item.MalfunctionId">
-                    <i class="fa fa-trash"></i>
+                <a class="btn btn-danger" asp-controller="Malfunctions" asp-action="Delete" asp-route-id="@item.MalfunctionId">
+                    <i class="fa fa-trash-o fa-lg"></i>
                 </a>
             </td>
         </tr>

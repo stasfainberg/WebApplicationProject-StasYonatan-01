@@ -58,14 +58,14 @@
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">
+                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">
                         <i class="fa fa-edit"></i>
                     </a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">
+                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">
                         <i class="fa fa-info"></i>
                     </a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">
-                        <i class="fa fa-trash"></i>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
+                        <i class="fa fa-trash-o fa-lg"></i>
                     </a>
                 </td>
             </tr>

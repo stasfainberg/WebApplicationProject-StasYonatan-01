@@ -8,8 +8,19 @@
     {
     <link rel="stylesheet" href="~/css/main.css" />
 }
+<div style="float:right">
+    <a class="btn btn-default" asp-action="Index">
+        <i class="fa fa-arrow-left"></i> Back
+    </a> |
+    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">
+        <i class="fa fa-edit"></i> Edit
+    </a> |
+    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">
+        <i class="fa fa-trash-o fa-lg"></i> Delete
+    </a>
+</div>
 
-    <h2>User Details</h2>
+<h2>User Details</h2>
 
 <div>
     <hr />
@@ -47,11 +58,3 @@
     </dl>
 </div>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">
-        <i class="fa fa-edit"></i>
-    </a> |
-    <a asp-action="Index">
-        <i class="fa fa-arrow-left"></i>
-    </a>
-</div>

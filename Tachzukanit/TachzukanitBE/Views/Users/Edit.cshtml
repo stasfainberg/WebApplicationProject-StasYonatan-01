@@ -8,7 +8,11 @@
     <link rel="stylesheet" href="~/css/main.css" />
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
+    <div style="float:right">
+        <a class="btn btn-default" asp-action="Index">
+            <i class="fa fa-arrow-left"></i> Back
+        </a>
+    </div>
 <h2>Edit User</h2>
 
 <hr />
@@ -37,16 +41,12 @@
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <button type="submit" class="btn btn-success">Save</button>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">
-        <i class="fa fa-arrow-left"></i>
-    </a>
-</div>
 

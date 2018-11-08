@@ -9,8 +9,13 @@
     <link rel="stylesheet" href="~/css/main.css" />
 }
 
+<div style="float:right">
+    <a class="btn btn-default" asp-action="Index">
+        <i class="fa fa-arrow-left"></i> Back
+    </a>
+</div>
 
-    <h2>Create Apartment</h2>
+<h2>Create Apartment</h2>
 
 <hr />
 <div class="row">
@@ -24,10 +29,10 @@
             </div>
 
             @*<div class="form-group">
-            <label asp-for="Photo" class="control-label"></label>
-            <input asp-for="Photo" class="form-control" />
-            <span asp-validation-for="Photo" class="text-danger"></span>
-            </div>*@
+                <label asp-for="Photo" class="control-label"></label>
+                <input asp-for="Photo" class="form-control" />
+                <span asp-validation-for="Photo" class="text-danger"></span>
+                </div>*@
 
 
             <div class="form-group">
@@ -48,25 +53,19 @@
                 @*</div>*@
             </div>
             @*<div class="form-group">*@
-                 @*<div class="col-md-10">*@
-                    @*<input type="submit" value="Upload" />*@
-                 @*</div>*@
+            @*<div class="col-md-10">*@
+            @*<input type="submit" value="Upload" />*@
+            @*</div>*@
             @*</div>*@
             @* </form>*@
 
             @*STAS*@
-
-
-
+                
+            <br />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <Button type="submit" class="btn btn-success">Create</Button>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">
-        <i class="fa fa-arrow-left"></i>
-    </a>
-</div>

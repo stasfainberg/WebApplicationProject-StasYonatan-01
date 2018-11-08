@@ -16,28 +16,34 @@
         </button>
     </div>
 </form>
-<p>
-    <a asp-action="Create" >
-        <i class="fa fa-plus fa-2x"></i>
-    </a>
-</p>
-    <section class="tiles">
-        @if (Model != null)
-        {
-            @foreach (var item in Model)
-            {
-                <article class="style1">
-                    <span class="image">
-                        <img src="@Url.Content(item.Photo)" />
-                    </span>
-                    <a asp-action="Details" asp-route-id="@item.ApartmentId">
-                        <h2>@Html.DisplayFor(modelItem => item.Address)</h2>
-                        <div class="content">
-                            <p>@Html.DisplayFor(modelItem => item.RoomsNumber)</p>
-                        </div>
-                    </a>
 
-                </article>
+<div >
+    <a class="btn btn-success" asp-action="Create">
+        <i class="fa fa-plus fa-2x"></i> Add
+    </a>
+    <br />
+    <br />
+    <br />
+    <div>
+        <section class="tiles">
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    <article class="style1">
+                        <span class="image">
+                            <img src="@Url.Content(item.Photo)" />
+                        </span>
+                        <a asp-action="Details" asp-route-id="@item.ApartmentId">
+                            <h2>@Html.DisplayFor(modelItem => item.Address)</h2>
+                            <div class="content">
+                                <p>@Html.DisplayFor(modelItem => item.RoomsNumber)</p>
+                            </div>
+                        </a>
+
+                    </article>
+                }
             }
-        }
-    </section>
+        </section>
+    </div>
+</div>
