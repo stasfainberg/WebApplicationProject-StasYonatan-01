@@ -13,13 +13,11 @@ namespace TachzukanitBE.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly UserManager<User> _userManager;
         private readonly TachzukanitDbContext _context;
 
-        public UsersController(TachzukanitDbContext context, UserManager<User> userManager)
+        public UsersController(TachzukanitDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index(String searchString)
@@ -57,6 +55,10 @@ namespace TachzukanitBE.Controllers
             {
                 return NotFound();
             }
+            //if (_context.Users..Current.User.Identity.GetUserId())
+            //{
+
+            //}
 
             var user = await _context.User.FindAsync(id);
             if (user == null)
