@@ -24,7 +24,7 @@ namespace TachzukanitBE.Controllers
             // Query with Join and Group By- using address parameter
            var qBarGraph = from malfunctions in _context.Malfunction
                             join apartments in _context.Apartment on malfunctions.CurrentApartment equals apartments
-                            where apartments.Address.Equals(address)
+                            where apartments.Address.Contains(address)
                             group malfunctions by malfunctions.CreationDate.Month into groupMalfunctions
                             select new
                             {
