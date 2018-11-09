@@ -83,7 +83,6 @@ namespace TachzukanitBE.Controllers
 
                 SavePhoto(apartment, files);
                 _context.Add(apartment);
-                //apartment.Photo = UploadFile(file).Result;
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -120,11 +119,26 @@ namespace TachzukanitBE.Controllers
 
         private void SavePhoto(Apartment apartment, IFormFile files)
         {
-            if (files != null)
+            // Sanity check apartment cant be null
+            if (apartment == null)
             {
-                var fileName = Path.Combine(he.WebRootPath+"/images/apartments", Path.GetFileName(files.FileName));
+                return;
+            }
+
+            // If there is no defined photo, set the default photo
+            if (files == null)
+            {
+                apartment.Photo = "/images/apartments/default_photo.jpg";
+                return;
+            }
+
+            var fileName = Path.Combine(he.WebRootPath + "/images/apartments", Path.GetFileName(files.FileName));
+            apartment.Photo = "/images/apartments/" + files.FileName;
+
+            // If the file does not exist already creating it
+            if (!System.IO.File.Exists(fileName))
+            {
                 files.CopyTo(new FileStream(fileName, FileMode.Create));
-                apartment.Photo = "\\images\\apartments\\" + files.FileName;
             }
         }
 
