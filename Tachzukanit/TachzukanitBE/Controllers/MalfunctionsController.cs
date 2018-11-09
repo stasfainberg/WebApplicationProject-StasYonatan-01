@@ -31,9 +31,19 @@ namespace TachzukanitBE.Controllers
         public async Task<IActionResult> ShowMalfExtraDetails(DateTime createDate, Status status,
                                                               string address, string userName)
         {
+            if ((createDate == null) && (String.IsNullOrEmpty(status.ToString())) &&
+                  String.IsNullOrEmpty(address) && String.IsNullOrEmpty(userName))
+            {
+                return View(await _context.Malfunction.ToListAsync());
+            }
 
+            return (await SearchMalfExtraDetails(createDate, status, address, userName));
+        }
+
+        private async Task<IActionResult> SearchMalfExtraDetails(DateTime createDate, Status status,
+                                                              string address, string userName)
+        {
             Status enumStatus = (Status)status;
-
 
             var q = from malfunction in _context.Malfunction
                     join apartments in _context.Apartment on malfunction.CurrentApartment equals apartments
@@ -41,7 +51,7 @@ namespace TachzukanitBE.Controllers
                     where malfunction.CreationDate >= createDate &&
                           malfunction.Status.Equals(enumStatus) &&
                           apartments.Address.Equals(address) &&
-                          malfunction.RequestedBy.FullName.Contains(userName)
+                          malfunction.RequestedBy.Email.Contains(userName)
                     select new ExtraDetailsMalfunctionsVM()
                     {
                         Title = malfunction.Title,
@@ -52,9 +62,9 @@ namespace TachzukanitBE.Controllers
                         AppartmentAddress = apartments.Address,
                         UserName = users.FullName
                     };
-            
-            return View(await q.ToListAsync());
-        }
+
+             return View(await q.ToListAsync());
+    }
 
         // GET: Malfunctions
         [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]

@@ -125,6 +125,9 @@ namespace TachzukanitBE.Areas.Identity.Pages.Account
                 }
             }
 
+            var roles = from eUserRoles usrl in Enum.GetValues(typeof(eUserRoles))
+                select new { Value = usrl.ToString(), Text = usrl.ToString() };
+            ViewData["Roles"] = new SelectList(roles, "Value", "Text");
             // If we got this far, something failed, redisplay form
             return Page();
         }
