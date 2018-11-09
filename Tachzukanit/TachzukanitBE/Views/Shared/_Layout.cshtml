@@ -57,13 +57,16 @@
         </div>
     </header>
 
-       <partial name="_CookieConsentPartial" />
-
-
+    <partial name="_CookieConsentPartial" />
+    
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
+            <div class="fb-share-button"
+                 data-href="https://www.facebook.com/sharer/sharer.php?u=https://www.facebook.com/sharer/sharer.php"
+                 data-layout="button_count">
+            </div>
             <p>&copy; 2018 - TachzukanitBE</p>
         </footer>
     </div>
@@ -77,6 +80,8 @@
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKp42W_7Sc_kcVimZm-pPKG2TCXeFdzto&callback=initMap">
         </script>
+        <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
+        <script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
 
     </environment>
     <environment exclude="Development">
