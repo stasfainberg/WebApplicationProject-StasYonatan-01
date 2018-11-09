@@ -39,6 +39,7 @@
                 <div class="myDropdown_navbar">
                     <ul class="nav navbar-nav">
                         <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
+                        <li><a asp-area="" asp-controller="Malfunctions" asp-action="Index">Malfunctions</a></li>
                         <li><a asp-area="" asp-controller="Statistics" asp-action="Index">Statistics</a></li>
                         @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
