@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using GoogleMaps.LocationServices;
+using GuigleAPI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,10 +30,14 @@ namespace TachzukanitBE.Controllers
         }
 
         // GET: Apartments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(String searchString)
         {
-            //return RedirectToAction("Index", "HomeController", await _context.Apartment.ToListAsync());
-            return View(await _context.Apartment.ToListAsync());
+            if (String.IsNullOrEmpty(searchString))
+            {
+                return View(await _context.Apartment.ToListAsync());
+            }
+
+            return View(await _context.Apartment.Where(a => a.Address.Contains(searchString)).ToListAsync());
         }
 
         // GET: Apartments/Details/5
@@ -42,8 +48,9 @@ namespace TachzukanitBE.Controllers
                 return NotFound();
             }
 
-            var apartment = await _context.Apartment
+            var apartment = await _context.Apartment.Include(x=> x.malfunctions)
                 .FirstOrDefaultAsync(m => m.ApartmentId == id);
+
             if (apartment == null)
             {
                 return NotFound();
@@ -70,44 +77,70 @@ namespace TachzukanitBE.Controllers
             if (ModelState.IsValid)
             {
                 // Getting the long lat
-                var location = AddLngLat(apartment);
-                apartment.Latitude = location.Item1;
-                apartment.Longitude = location.Item2;
+                var location = AddLongLatAsync(apartment.Address);
+                apartment.Latitude = location.Result.Latitude;
+                apartment.Longitude = location.Result.Longitude;
 
                 SavePhoto(apartment, files);
                 _context.Add(apartment);
-                //apartment.Photo = UploadFile(file).Result;
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(apartment);
         }
 
-        private Tuple<float, float> AddLngLat(Apartment apartment)
+        private async Task<MapPoint> AddLongLatAsync(string apartmentAddress)
         {
-            return new Tuple<float, float>(0, 0);
+            MapPoint point;
+
+            // Getting the location of the address
+            try
+            {
+                GoogleGeocodingAPI.GoogleAPIKey = "AIzaSyDKp42W_7Sc_kcVimZm-pPKG2TCXeFdzto";
+                var result = await GoogleGeocodingAPI.GetCoordinatesFromAddressAsync(apartmentAddress);
+
+                point = new MapPoint
+                {
+                    Latitude = result.Item1,
+                    Longitude = result.Item2
+                };
+            }
+            catch (Exception ex)
+            {
+                point = new MapPoint
+                {
+                    Latitude = 32.1637206,
+                    Longitude = 34.8647352
+                };
+            }
+
+            return point;
         }
 
         private void SavePhoto(Apartment apartment, IFormFile files)
         {
-            if (files != null)
+            // Sanity check apartment cant be null
+            if (apartment == null)
             {
-                var fileName = Path.Combine(he.WebRootPath + "/images/apartments", Path.GetFileName(files.FileName));
+                return;
+            }
+
+            // If there is no defined photo, set the default photo
+            if (files == null)
+            {
+                apartment.Photo = "/images/apartments/default_photo.jpg";
+                return;
+            }
+
+            var fileName = Path.Combine(he.WebRootPath + "/images/apartments", Path.GetFileName(files.FileName));
+            apartment.Photo = "/images/apartments/" + files.FileName;
+
+            // If the file does not exist already creating it
+            if (!System.IO.File.Exists(fileName))
+            {
                 files.CopyTo(new FileStream(fileName, FileMode.Create));
-                apartment.Photo = "\\images\\apartments\\" + files.FileName;
             }
         }
-
-        //private async Task<string> UploadFile(IFormFile file)
-        //{
-        //    // full path to file in temp location
-        //    var filePath = "~/images/Apartments/" + file.FileName;
-        //    using (var stream = new FileStream(filePath, FileMode.Create))
-        //    {
-        //        await file.CopyToAsync(stream);
-        //    }
-        //    return filePath;
-        //}
 
         // GET: Apartments/Edit/5
         [Authorize(Roles = "Admin")]

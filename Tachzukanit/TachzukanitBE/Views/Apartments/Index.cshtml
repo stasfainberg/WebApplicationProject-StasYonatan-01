@@ -4,43 +4,46 @@
     ViewData["Title"] = "Index";
 }
 @section Scripts
-{
-
-    <link rel="stylesheet" href="~/assets/css/main.css" />
-    <link rel="stylesheet" href="~/css/search.css" />
-    
-}
-<br />
-<br />
-<div class="search">
-    <input type="text" class="search-query" placeholder="חיפוש" />
-    <button class="search-button" type="submit">
-        <i class="fa fa-search"></i>
-    </button>
-</div>
-<br />
-
-
-<br />
-
-<section class="tiles">
-    @if (Model != null)
     {
-        @foreach (var item in Model)
-        {
-            <article class="style1">
-                <span class="image">
-                    <img src="@Url.Content(item.Photo)" />
-                </span>
-                <a asp-action="Details" asp-route-id="@item.ApartmentId">
-                    <h2>@Html.DisplayFor(modelItem => item.Address)</h2>
-                    <div class="content">
-                        <p>@Html.DisplayFor(modelItem => item.RoomsNumber)</p>
-                    </div>
-                </a>
+    <link rel="stylesheet" href="~/css/main.css" />
+    <link rel="stylesheet" href="~/css/search.css" />
+}
+<form asp-controller="Apartments" asp-action="Index" method="get">
+    <div class="search">
+        <input name="SearchString" type="text" class="search-query" placeholder="Search" />
+        <button id="searchButton" class="search-button" type="submit">
+            <i class="fa fa-search"></i>
+        </button>
+    </div>
+</form>
 
-            </article>
-        }
-    }
-</section>
-<p>@Html.ActionLink("Create", "Create", "Apartments") </p>
+<div >
+    <a class="btn btn-success" asp-action="Create">
+        <i class="fa fa-plus fa-2x"></i> Add
+    </a>
+    <br />
+    <br />
+    <br />
+    <div>
+        <section class="tiles">
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    <article class="style1">
+                        <span class="image">
+                            <img class="img-rounded photo-big" src="@Url.Content(item.Photo)" alt=""/>
+                        </span>
+                        <a asp-action="Details" asp-route-id="@item.ApartmentId">
+                            <h2>@Html.DisplayFor(modelItem => item.Address)</h2>
+                            <div class="content">
+                                <p>@Html.DisplayFor(modelItem => item.RoomsNumber)</p>
+                            </div>
+                        </a>
+
+                    </article>
+                }
+            }
+        </section>
+    </div>
+</div>

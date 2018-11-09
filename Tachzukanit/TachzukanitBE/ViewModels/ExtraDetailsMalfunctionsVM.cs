@@ -27,6 +27,6 @@ namespace TachzukanitBE.ViewModels
         public String AppartmentAddress { get; set; }
 
         [Display(Name = "User name")]
-        public String userName { get; set; }
+        public String UserName { get; set; }
     }
 }

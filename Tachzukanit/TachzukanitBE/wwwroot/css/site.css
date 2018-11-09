@@ -18,6 +18,23 @@ body {
     line-height: 1.4;
 }
 
+.img-small {
+    height: 110px;
+    width: auto;
+    max-width: 500px;
+}
+
+.img-medium {
+    height: 170px;
+    width: auto;
+    max-width: 500px;
+}
+
+.img-large {
+    height: 220px;
+    width: auto;
+    max-width: 500px;
+} 
 /* Make .svg files in the carousel display properly in older browsers */
 .carousel-inner .item img[src$=".svg"] {
     width: 100%;
