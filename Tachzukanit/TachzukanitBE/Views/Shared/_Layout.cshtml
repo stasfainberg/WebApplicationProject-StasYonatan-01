@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -35,6 +39,11 @@
                 <div class="myDropdown_navbar">
                     <ul class="nav navbar-nav">
                         <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
+                        <li><a asp-area="" asp-controller="Statistics" asp-action="Index">Statistics</a></li>
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li><a asp-area="" asp-controller="Malfunction" asp-action="ShowMalfExtraDetails">Manager</a></li>
+                        }
                         <li><a asp-area="" asp-controller="Apartments" asp-action="About">About</a></li>
                         <li><a asp-area="" asp-controller="Apartments" asp-action="Contact">Contact</a></li>
                     </ul>
@@ -58,7 +67,7 @@
     </header>
 
     <partial name="_CookieConsentPartial" />
-    
+
     <div class="container body-content">
         @RenderBody()
         <hr />
