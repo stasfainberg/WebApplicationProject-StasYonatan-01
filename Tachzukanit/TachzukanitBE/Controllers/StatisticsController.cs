@@ -32,16 +32,8 @@ namespace TachzukanitBE.Controllers
                                 count = groupMalfunctions.Count()
                             };
 
-            var malfunctionCount = new List<dynamic>();
-            
-            // Creating list for graph
-            foreach (var malfunctions in qBarGraph)
-            {
-                malfunctionCount.Add(malfunctions);
-            }
-
             // Create JSON from list
-            var malfunctionsBarJson = JsonConvert.SerializeObject(malfunctionCount);
+            var malfunctionsBarJson = JsonConvert.SerializeObject(qBarGraph.ToList());
             ViewBag.Count = malfunctionsBarJson;
 
 
@@ -54,16 +46,8 @@ namespace TachzukanitBE.Controllers
                                 count = groupStatus.Count()
                             };
 
-           var malfunctionStatus = new List<dynamic>();
-
-            // Creating list for graph
-            foreach (var malfunctions in qPieGraph)
-            {
-                malfunctionStatus.Add(malfunctions);
-            }
-
             // Create JSON from list
-            var malfunctionsPieJson = JsonConvert.SerializeObject(malfunctionStatus);
+            var malfunctionsPieJson = JsonConvert.SerializeObject(qPieGraph.ToList());
 
             ViewBag.Status = malfunctionsPieJson;
 
