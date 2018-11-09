@@ -2,7 +2,11 @@
 @{
     ViewData["Title"] = "Statistics";
 }
-
+@section Scripts
+    {
+    <link rel="stylesheet" href="~/css/main.css" />
+    <link rel="stylesheet" href="~/css/search.css" />
+}
 <h2>Statistics</h2>
 
 @using (Html.BeginForm("Index", "Statistics", FormMethod.Post))
@@ -18,12 +22,15 @@
     <div class="stat-chart">
         <h3>Malfunctions by month</h3><br />
         <p>The following chart shows the number of malfunctions per month for the following address</p>
-        <p>
-            address: @Html.TextBox("address")
-            <button class="search-button" type="submit">
-                <i class="fa fa-search"></i>
-            </button>
-        </p>
+            <form asp-controller="Statistics" asp-action="Index" method="get">
+                <div class="search">
+                    <input name="SearchString" type="text" class="search-query" placeholder="Search Address" />
+                    <button id="searchButton" class="search-button" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </form>
+            
         <div class="bar"></div>
     </div>
 }
