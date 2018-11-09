@@ -9,4 +9,37 @@
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-// Write your JavaScript code.
+
+function initMap() {
+
+    var latitudeElement = document.getElementById("Latitude");
+    var longitudeElement = document.getElementById("Longitude");
+    var mapElement = document.getElementById('map');
+
+    // If there is no map element quit the init map function
+    if (mapElement == null) {
+        return;
+    }
+
+    // If we don't have a Latitude and Longitude elements sets the map to default location
+    if (latitudeElement == null || longitudeElement == null) {
+        var uluru = { lat: 31.771959, lng: 35.217018 };
+        var mapZoom = 9;
+    }
+    else {
+        var uluru = {
+            lat: Number.parseFloat(latitudeElement.value),
+            lng: Number.parseFloat(longitudeElement.value)
+        };
+        var mapZoom = 14;
+    }
+
+    // The map, centered at Uluru
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: mapZoom,
+        center: uluru
+    });
+
+    // The marker, positioned at Uluru
+    var marker = new google.maps.Marker({ position: uluru, map: map });
+}
