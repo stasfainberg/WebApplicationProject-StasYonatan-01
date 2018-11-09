@@ -40,8 +40,8 @@ namespace TachzukanitBE.Controllers
                     join users in _context.User on malfunction.RequestedBy equals users
                     where malfunction.CreationDate >= createDate &&
                           malfunction.Status.Equals(enumStatus) &&
-                          apartments.Address.Equals(address) /*&&
-                          malfunction.RequestedBy.FullName.Contains(userName)*/
+                          apartments.Address.Equals(address) &&
+                          malfunction.RequestedBy.FullName.Contains(userName)
                     select new ExtraDetailsMalfunctionsVM()
                     {
                         Title = malfunction.Title,
