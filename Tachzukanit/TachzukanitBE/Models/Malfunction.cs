@@ -29,9 +29,11 @@ namespace TachzukanitBE.Models
         public string Resources { get; set; }
 
         [DisplayName("Creation Date")]
+        [DataType(DataType.Date)]
         public DateTime CreationDate { get; set; }
 
         [DisplayName("Modification Date")]
+        [DataType(DataType.Date)]
         public DateTime ModifiedDate { get; set; }
 
         [DisplayName("Apartment")]

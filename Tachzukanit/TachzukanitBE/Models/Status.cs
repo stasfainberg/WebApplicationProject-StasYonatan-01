@@ -3,7 +3,7 @@
     public enum Status
     {
         Open,
-        Closed,
-        InProgress
+        InProgress,
+        Closed
     }
 }
