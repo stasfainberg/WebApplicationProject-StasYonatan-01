@@ -83,11 +83,16 @@ namespace TachzukanitBE.Controllers
             return View(apartment);
         }
 
+        private Tuple<float, float> AddLngLat(Apartment apartment)
+        {
+            return new Tuple<float, float>(0, 0);
+        }
+
         private void SavePhoto(Apartment apartment, IFormFile files)
         {
             if (files != null)
             {
-                var fileName = Path.Combine(he.WebRootPath+"/images/apartments", Path.GetFileName(files.FileName));
+                var fileName = Path.Combine(he.WebRootPath + "/images/apartments", Path.GetFileName(files.FileName));
                 files.CopyTo(new FileStream(fileName, FileMode.Create));
                 apartment.Photo = "\\images\\apartments\\" + files.FileName;
             }
