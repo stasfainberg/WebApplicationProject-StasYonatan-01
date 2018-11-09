@@ -115,7 +115,7 @@ namespace TachzukanitBE.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]
-        public async Task<IActionResult> Create([Bind("CurrentApartment")]int CurrentApartment, [Bind("RequestedBy")]string RequestedBy, [Bind("MalfunctionId,Status,Title,Content,Resources,CreationDate,ModifiedDate,CurrentApartmentId,RequestedById")] Malfunction malfunction)
+        public async Task<IActionResult> Create([Bind("CurrentApartment")]int CurrentApartment, [Bind("RequestedBy")]string RequestedBy, [Bind("MalfunctionId,Status,Title,Content,Resources,CurrentApartmentId,RequestedById")] Malfunction malfunction)
         {            
             if (ModelState.IsValid)
             {
@@ -143,6 +143,10 @@ namespace TachzukanitBE.Controllers
                 var curUser = queryUsr.First();
                 malfunction.RequestedBy= curUser;
 
+                // Adding the creation date and modification date
+                malfunction.CreationDate = DateTime.Now;
+                malfunction.ModifiedDate = DateTime.Now;
+
                 _context.Add(malfunction);
                 await _context.SaveChangesAsync();
 
@@ -165,6 +169,12 @@ namespace TachzukanitBE.Controllers
             {
                 return NotFound();
             }
+
+            // Adding all the statuses to the viewData
+            var statuses = from Status stat in Enum.GetValues(typeof(Status))
+                select new { Value = (int)stat, Text = stat.ToString() };
+            ViewData["statuses"] = new SelectList(statuses, "Value", "Text");
+
             return View(malfunction);
         }
 
@@ -174,7 +184,7 @@ namespace TachzukanitBE.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]
-        public async Task<IActionResult> Edit(string id, [Bind("MalfunctionId,Status,Title,Content,Resources,CreationDate,ModifiedDate")] Malfunction malfunction)
+        public async Task<IActionResult> Edit(string id, [Bind("MalfunctionId,Status,Title,Content,Resources")] Malfunction malfunction)
         {
             if (id != malfunction.MalfunctionId)
             {
@@ -183,22 +193,23 @@ namespace TachzukanitBE.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(malfunction);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MalfunctionExists(malfunction.MalfunctionId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                if (!MalfunctionExists(malfunction.MalfunctionId))
+                    return NotFound();
+
+                // Getting the malfunction from db
+                var malfunctionToSave = _context.Malfunction.First(mal => mal.MalfunctionId == id);
+
+                // Setting the new values
+                malfunctionToSave.ModifiedDate = DateTime.Now;
+                malfunctionToSave.Status = malfunction.Status;
+                malfunctionToSave.Title = malfunction.Title;
+                malfunctionToSave.Content = malfunction.Content;
+                malfunctionToSave.Resources = malfunction.Resources;
+
+                // Updating the new malfunction
+                _context.Update(malfunctionToSave);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(malfunction);
