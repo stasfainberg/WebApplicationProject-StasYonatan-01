@@ -13,21 +13,21 @@
 <div>
     @using (Html.BeginForm("ShowMalfExtraDetails", "Malfunctions", FormMethod.Post))
     {
-        <div>
-            <label for="create-date">Date/time:</label>
-            <input type="datetime-local" id="createDate"
-                   name="createDate"
-                   min="2016-01-01T00:00" max="2024-01-01T00:00" />
-        </div><br />
+    <div style="vertical-align: baseline">
+        <label for="create-date">Date/time:</label>
+        <input type="datetime-local" id="createDate"
+               name="createDate"
+               min="2016-01-01T00:00" max="2024-01-01T00:00" />
+
         <span>status: </span> @Html.DropDownList("Status", new List<SelectListItem> { new SelectListItem { Value ="Open" , Text ="Open" },
 new SelectListItem { Value = "Closed" , Text ="Closed" },
-new SelectListItem { Value = "InProgress" , Text ="In Progress" }}, "Please choose status")<br />
-        <br />
-        <p>address: @Html.TextBox("address")</p> <br />
-        <p>user name: @Html.TextBox("userName")</p> <br />
+new SelectListItem { Value = "InProgress" , Text ="In Progress" }}, "Please choose status")
+        <p>address: @Html.TextBox("address")</p>
+        <p>user name: @Html.TextBox("userName")</p>
         <button class="search-button" type="submit">
             <i class="fa fa-search"></i>
         </button>
+    </div>
     }
 
 </div>

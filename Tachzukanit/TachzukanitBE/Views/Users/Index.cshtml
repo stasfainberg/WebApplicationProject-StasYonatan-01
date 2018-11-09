@@ -10,7 +10,9 @@
 }
 <form asp-controller="Users" asp-action="Index" method="get">
     <div class="search">
-        <input name="SearchString" type="text" class="search-query" placeholder="Search" />
+        <input name="Name" type="text" class="search-query" placeholder="Search Name" />
+        <input name="Email" type="text" class="search-query" placeholder="Search Email" />
+        <input name="Address" type="text" class="search-query" placeholder="Search Address" />
         <button id="searchButton" class="search-button" type="submit">
             <i class="fa fa-search"></i>
         </button>
