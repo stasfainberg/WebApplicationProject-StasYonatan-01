@@ -1,9 +1,48 @@
 @import url(font-awesome.min.css);
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,700,900");
 
+@font-face {
+    font-family: 'FontAwsome';
+    src: url('../fonts/fontawesome-webfont.eot');
+    src: local('eurof75'), url('../fonts/fontawesome-webfont.woff') format('woff'), url('../fonts/fontawesome-webfont.ttf') format('truetype');
+}
+
+.newspaper {
+    -webkit-column-count: 3; /* Chrome, Safari, Opera */
+    -moz-column-count: 3; /* Firefox */
+    column-count: 3;
+    -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
+    -moz-column-gap: 40px; /* Firefox */
+    column-gap: 40px;
+    -webkit-column-rule-style: solid; /* Chrome, Safari, Opera */
+    -moz-column-rule-style: solid; /* Firefox */
+    column-rule-style: solid;
+    -webkit-column-rule-width: 1px; /* Chrome, Safari, Opera */
+    -moz-column-rule-width: 1px; /* Firefox */
+    column-rule-width: 1px;
+    -webkit-column-rule-color: #808080; /* Chrome, Safari, Opera */
+    -moz-column-rule-color: #808080; /* Firefox */
+    column-rule-color: #808080;
+}
+
 .body-content {
     padding-top: 20px; 
 }
+
+aside {
+    width: 40%;
+    padding-left: .5rem;
+    margin-left: .5rem;
+    float: right;
+    box-shadow: inset 5px 0 5px -5px #29627e;
+    font-style: italic;
+    color: #29627e;
+    text-shadow: 
+}
+
+    aside > p {
+        margin: .5rem;
+    }
 
 .fa-plus {
     color: green;
@@ -264,6 +303,7 @@ h2, h3, h4, h5, h6 {
 
 h2 {
     font-size: 1.1em;
+    text-shadow: 2px 1px black;
 }
 
 h3 {
