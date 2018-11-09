@@ -14,10 +14,12 @@ namespace TachzukanitBE.Controllers
     public class UsersController : Controller
     {
         private readonly TachzukanitDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public UsersController(TachzukanitDbContext context)
+        public UsersController(TachzukanitDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         private async Task<IActionResult> SearchUserDetails(string Name, string Email, string Address)
@@ -66,10 +68,10 @@ namespace TachzukanitBE.Controllers
             {
                 return NotFound();
             }
-            //if (_context.Users..Current.User.Identity.GetUserId())
-            //{
-
-            //}
+            if (_userManager.GetUserId(HttpContext.User).Equals(id))
+            {
+                return Redirect("/Identity/Account/Manage");
+            }
 
             var user = await _context.User.FindAsync(id);
             if (user == null)
