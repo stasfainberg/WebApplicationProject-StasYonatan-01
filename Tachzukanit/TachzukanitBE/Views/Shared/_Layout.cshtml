@@ -43,7 +43,7 @@
                         <li><a asp-area="" asp-controller="Statistics" asp-action="Index">Statistics</a></li>
                         @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
-                            <li><a asp-area="" asp-controller="Malfunction" asp-action="ShowMalfExtraDetails">Manager</a></li>
+                            <li><a asp-area="" asp-controller="Malfunctions" asp-action="ShowMalfExtraDetails">Manager</a></li>
                         }
                         <li><a asp-area="" asp-controller="Apartments" asp-action="About">About</a></li>
                         <li><a asp-area="" asp-controller="Apartments" asp-action="Contact">Contact</a></li>
