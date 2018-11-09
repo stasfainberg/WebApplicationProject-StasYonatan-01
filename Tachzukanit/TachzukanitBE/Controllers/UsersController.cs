@@ -20,14 +20,25 @@ namespace TachzukanitBE.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(String searchString)
+        private async Task<IActionResult> SearchUserDetails(string Name, string Email, string Address)
         {
-            if (String.IsNullOrEmpty(searchString))
+            var q = from users in _context.User
+                    where users.FullName.Contains(Name) &&
+                          users.Email.Contains(Email) &&
+                          users.Address.Contains(Address)
+                    select users;
+
+            return View(await q.ToListAsync());
+        }
+
+            public async Task<IActionResult> Index(string Name, string Email, string Address)
+        {
+            if (String.IsNullOrEmpty(Name) && String.IsNullOrEmpty(Email) && String.IsNullOrEmpty(Address))
             {
                 return View(await _context.User.ToListAsync());
             }
 
-            return View(await _context.User.Where(a => a.Address.Contains(searchString)).ToListAsync());
+            return (await SearchUserDetails(Name, Email, Address));
         }
 
         public async Task<IActionResult> Details(String id)
