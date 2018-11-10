@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using TachzukanitBE.Models;
 
 namespace TachzukanitBE.ViewModels
 {
@@ -12,7 +13,7 @@ namespace TachzukanitBE.ViewModels
         public string Title { get; set; }
 
         [Display(Name = "Status")]
-        public String Status { get; set; }
+        public string Status { get; set; }
 
         [Display(Name = "Content")]
         public string Content { get; set; }
