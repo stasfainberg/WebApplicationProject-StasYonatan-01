@@ -43,8 +43,12 @@ function initMap() {
     var marker = new google.maps.Marker({ position: uluru, map: map });
 }
 
-function addWeather(code, day, condition) {
-    window.alert(code + " - " + day + ": " + condition);
+function addWeather(day, condition) {
+    $("#weather").append('<li>' + "<div><b>" + day + "</div></b>" + "<p>" + condition + "</p>"+'</li>');
+}
+
+function convertToCelsius(temp) {
+    return Math.round(5 * (temp - 32) / 9);
 }
 
 function getWeather() {
@@ -71,14 +75,13 @@ function getWeather() {
             // Create the weather items in the #scroller UL
 
             var item = r.query.results.channel.item.condition;
-            addWeather(item.code, "Now", item.text + ' <b>' + item.temp + '°' + DEG + '</b>');
+            addWeather("Now ", item.text + " " + convertToCelsius(item.temp) + ' ° ' + DEG );
 
             for (var i = 0; i < 2; i++) {
                 item = r.query.results.channel.item.forecast[i];
                 addWeather(
-                    item.code,
-                    item.day + ' <b>' + item.date.replace('\d+$', '') + '</b>',
-                    item.text + ' <b>' + item.low + '°' + DEG + ' / ' + item.high + '°' + DEG + '</b>'
+                    item.date.replace('\d+$', '') + " " + item.day + ":",
+                    item.text + " " + convertToCelsius(item.low) + '-' + convertToCelsius(item.high)  + ' ° ' + DEG
                 );
             }
         }
