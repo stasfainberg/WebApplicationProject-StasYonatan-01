@@ -7,12 +7,21 @@
 @section Scripts
     {
     <link rel="stylesheet" href="~/css/main.css" />
+    <script>
+        $(document).ready(function () {
+            $('[data-confirm]').click(function (e) {
+                if (!confirm(jQuery(this).attr("data-confirm"))) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
 }
-    <div style="float:right">
-        <a class="btn btn-default" asp-action="Index">
-            <i class="fa fa-arrow-left"></i> Back
-        </a>
-    </div>
+<div style="float:right">
+    <a class="btn btn-default" asp-action="Index">
+        <i class="fa fa-arrow-left"></i> Back
+    </a>
+</div>
 <h2>Delete Apartment</h2>
 
 <h3>Are you sure you want to delete this?</h3>
@@ -26,23 +35,23 @@
             @Html.DisplayFor(model => model.Address)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Photo)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Photo)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.RoomsNumber)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.RoomsNumber)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Photo)
+        </dt>
+        <dd>
+            <img class="img-large" src="@Url.Content(Model.Photo)" alt="" />
+        </dd>
     </dl>
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="ApartmentId" />
-        <Button type="submit" class="btn btn-danger">
+        <Button type="submit" class="btn btn-danger" data-confirm="Are you sure?">
             <i class="fa fa-trash-o fa-lg"></i> Delete
-        </Button> 
+        </Button>
     </form>
 </div>

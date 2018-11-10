@@ -170,7 +170,7 @@ namespace TachzukanitBE.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("ApartmentId,Address,Photo,RoomsNumber")] Apartment apartment)
+        public async Task<IActionResult> Edit(int id, [Bind("ApartmentId,Address,Photo,RoomsNumber")] Apartment apartment, IFormFile files)
         {
             if (id != apartment.ApartmentId)
             {
@@ -179,6 +179,11 @@ namespace TachzukanitBE.Controllers
 
             if (ModelState.IsValid)
             {
+                if (files != null)
+                {
+                    SavePhoto(apartment, files);
+                }
+
                 try
                 {
                     _context.Update(apartment);
