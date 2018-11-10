@@ -45,12 +45,6 @@
             @Html.DisplayFor(model => model.Content)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Resources)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Resources)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.CreationDate)
         </dt>
         <dd>
@@ -61,6 +55,12 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.ModifiedDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Resources)
+        </dt>
+        <dd>
+            <img class="img-large" src="@Url.Content(Model.Resources)" alt="" />
         </dd>
     </dl>
 </div>

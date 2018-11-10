@@ -27,6 +27,7 @@
     -webkit-column-rule-color: #808080; /* Chrome, Safari, Opera */
     -moz-column-rule-color: #808080; /* Firefox */
     column-rule-color: #808080;
+    text-align: justify
 }
 
 .body-content {

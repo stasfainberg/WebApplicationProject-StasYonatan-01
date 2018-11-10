@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
+    <Folder Include="wwwroot\images\malfunctions\" />
+    <Folder Include="wwwroot\videos\" />
   </ItemGroup>
 
   <ItemGroup>
