@@ -41,9 +41,6 @@ namespace TachzukanitBE.Controllers
                 return View(await _context.Malfunction.ToListAsync());
             }
 
-            var statuses = from Status stat in Enum.GetValues(typeof(Status))
-                           select new { Value = (int)stat, Text = stat.ToString() };
-            ViewData["statuses"] = new SelectList(statuses, "Value", "Text");
             return (await SearchMalfExtraDetails(createDate, status, address, userName));
         }
 
