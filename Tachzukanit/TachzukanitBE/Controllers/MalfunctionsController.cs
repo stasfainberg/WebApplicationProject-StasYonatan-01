@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,10 +22,12 @@ namespace TachzukanitBE.Controllers
     public class MalfunctionsController : Controller
     {
         private readonly TachzukanitDbContext _context;
+        private readonly IHostingEnvironment he;
 
-        public MalfunctionsController(TachzukanitDbContext context)
+        public MalfunctionsController(TachzukanitDbContext context, IHostingEnvironment e)
         {
             _context = context;
+            he = e;
         }
 
         // POST: Get malfunctions parameters from the user and search in server
@@ -125,7 +129,7 @@ namespace TachzukanitBE.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]
-        public async Task<IActionResult> Create([Bind("CurrentApartment")]int CurrentApartment, [Bind("RequestedBy")]string RequestedBy, [Bind("MalfunctionId,Status,Title,Content,Resources,CurrentApartmentId,RequestedById")] Malfunction malfunction)
+        public async Task<IActionResult> Create([Bind("CurrentApartment")]int CurrentApartment, [Bind("RequestedBy")]string RequestedBy, [Bind("MalfunctionId,Status,Title,Content,Resources,CurrentApartmentId,RequestedById")] Malfunction malfunction, IFormFile mFiles)
         {            
             if (ModelState.IsValid)
             {
@@ -157,12 +161,40 @@ namespace TachzukanitBE.Controllers
                 malfunction.CreationDate = DateTime.Now;
                 malfunction.ModifiedDate = DateTime.Now;
 
+                // Uploading photo describing the malfunction
+                SavePhoto(malfunction, mFiles);
+
                 _context.Add(malfunction);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
             return View(malfunction);
+        }
+
+        private void SavePhoto(Malfunction malfunction, IFormFile mFiles)
+        {
+            // Sanity check apartment cant be null
+            if (malfunction == null)
+            {
+                return;
+            }
+
+            // If there is no defined photo, set the default photo
+            if (mFiles == null)
+            {
+                malfunction.Resources = "/images/malfunctions/default_malfunction_photo.jpg";
+                return;
+            }
+
+            var fileName = Path.Combine(he.WebRootPath + "/images/malfunctions", Path.GetFileName(mFiles.FileName));
+            malfunction.Resources = "/images/malfunctions/" + mFiles.FileName;
+
+            // If the file does not exist already creating it
+            if (!System.IO.File.Exists(fileName))
+            {
+                mFiles.CopyTo(new FileStream(fileName, FileMode.Create));
+            }
         }
 
         // GET: Malfunctions/Edit/5

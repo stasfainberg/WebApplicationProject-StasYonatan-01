@@ -9,9 +9,8 @@
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-
 function initMap() {
-
+    getWeather();
     var latitudeElement = document.getElementById("Latitude");
     var longitudeElement = document.getElementById("Longitude");
     var mapElement = document.getElementById('map');
@@ -42,4 +41,49 @@ function initMap() {
 
     // The marker, positioned at Uluru
     var marker = new google.maps.Marker({ position: uluru, map: map });
+}
+
+function addWeather(day, condition) {
+    $("#weather").append('<li>' + "<div><b>" + day + "</div></b>" + "<p>" + condition + "</p>"+'</li>');
+}
+
+function convertToCelsius(temp) {
+    return Math.round(5 * (temp - 32) / 9);
+}
+
+function getWeather() {
+    var latitudeElement = document.getElementById("Latitude");
+    var longitudeElement = document.getElementById("Longitude");
+
+    var DEG = "Celsius";
+    var lat = 31.771959;
+    var lng = 35.217018;
+
+    if (latitudeElement != null && longitudeElement != null) {
+        lat = latitudeElement.value;
+        lng = longitudeElement.value;
+    }
+    
+    var wsql = "select * from weather.forecast where woeid in (SELECT woeid FROM geo.places WHERE text = \"("+ lat + "," + lng +")\")",
+        weatherYQL = 'https://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent(wsql) + '&format=json&callback=?',
+        code, city, results, woeid;
+
+    // Make a weather API request (it is JSONP, so CORS is not an issue):
+    $.getJSON(weatherYQL, function (r) {
+        if (r.query.count != 0) {
+
+            // Create the weather items in the #scroller UL
+
+            var item = r.query.results.channel.item.condition;
+            addWeather("Now ", item.text + " " + convertToCelsius(item.temp) + ' ° ' + DEG );
+
+            for (var i = 0; i < 2; i++) {
+                item = r.query.results.channel.item.forecast[i];
+                addWeather(
+                    item.date.replace('\d+$', '') + " " + item.day + ":",
+                    item.text + " " + convertToCelsius(item.low) + '-' + convertToCelsius(item.high)  + ' ° ' + DEG
+                );
+            }
+        }
+    });
 }

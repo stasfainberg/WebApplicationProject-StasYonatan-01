@@ -7,6 +7,10 @@
     src: local('eurof75'), url('../fonts/fontawesome-webfont.woff') format('woff'), url('../fonts/fontawesome-webfont.ttf') format('truetype');
 }
 
+.dialog-message {
+    display: none;
+}
+
 .newspaper {
     -webkit-column-count: 3; /* Chrome, Safari, Opera */
     -moz-column-count: 3; /* Firefox */
@@ -23,6 +27,7 @@
     -webkit-column-rule-color: #808080; /* Chrome, Safari, Opera */
     -moz-column-rule-color: #808080; /* Firefox */
     column-rule-color: #808080;
+    text-align: justify
 }
 
 .body-content {
@@ -36,7 +41,7 @@ aside {
     float: right;
     box-shadow: inset 5px 0 5px -5px #29627e;
     font-style: italic;
-    color: #29627e;
+    color: black;
 }
 
     aside > p {

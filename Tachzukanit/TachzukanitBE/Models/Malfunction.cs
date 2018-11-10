@@ -25,7 +25,7 @@ namespace TachzukanitBE.Models
         [MaxLength(200)]
         public string Content { get; set; }
 
-        [DisplayName("Photo/Video")]
+        [DisplayName("Photo")]
         public string Resources { get; set; }
 
         [DisplayName("Creation Date")]
