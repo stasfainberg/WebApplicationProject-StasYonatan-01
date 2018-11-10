@@ -9,9 +9,8 @@
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-
 function initMap() {
-
+    getWeather();
     var latitudeElement = document.getElementById("Latitude");
     var longitudeElement = document.getElementById("Longitude");
     var mapElement = document.getElementById('map');
@@ -42,4 +41,46 @@ function initMap() {
 
     // The marker, positioned at Uluru
     var marker = new google.maps.Marker({ position: uluru, map: map });
+}
+
+function addWeather(code, day, condition) {
+    window.alert(code + " - " + day + ": " + condition);
+}
+
+function getWeather() {
+    var latitudeElement = document.getElementById("Latitude");
+    var longitudeElement = document.getElementById("Longitude");
+
+    var DEG = "Celsius";
+    var lat = 31.771959;
+    var lng = 35.217018;
+
+    if (latitudeElement != null && longitudeElement != null) {
+        lat = latitudeElement.value;
+        lng = longitudeElement.value;
+    }
+    
+    var wsql = "select * from weather.forecast where woeid in (SELECT woeid FROM geo.places WHERE text = \"("+ lat + "," + lng +")\")",
+        weatherYQL = 'https://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent(wsql) + '&format=json&callback=?',
+        code, city, results, woeid;
+
+    // Make a weather API request (it is JSONP, so CORS is not an issue):
+    $.getJSON(weatherYQL, function (r) {
+        if (r.query.count != 0) {
+
+            // Create the weather items in the #scroller UL
+
+            var item = r.query.results.channel.item.condition;
+            addWeather(item.code, "Now", item.text + ' <b>' + item.temp + '°' + DEG + '</b>');
+
+            for (var i = 0; i < 2; i++) {
+                item = r.query.results.channel.item.forecast[i];
+                addWeather(
+                    item.code,
+                    item.day + ' <b>' + item.date.replace('\d+$', '') + '</b>',
+                    item.text + ' <b>' + item.low + '°' + DEG + ' / ' + item.high + '°' + DEG + '</b>'
+                );
+            }
+        }
+    });
 }
