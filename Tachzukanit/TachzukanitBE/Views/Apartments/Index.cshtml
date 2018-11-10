@@ -10,14 +10,14 @@
 }
 <form asp-controller="Apartments" asp-action="Index" method="get">
     <div class="search">
-        <input name="SearchString" type="text" class="search-query" placeholder="Search" autofocus/>
+        <input name="SearchString" type="text" class="search-query" placeholder="Search" autofocus />
         <button id="searchButton" class="search-button" type="submit">
             <i class="fa fa-search"></i>
         </button>
     </div>
 </form>
 
-<div >
+<div>
     <a class="btn btn-success" asp-action="Create">
         <i class="fa fa-plus fa-2x"></i> Add
     </a>
@@ -32,7 +32,7 @@
                 {
                     <article class="style1">
                         <span class="image">
-                            <img class="img-rounded photo-big" src="@Url.Content(item.Photo)" alt=""/>
+                            <img class="img-rounded photo-big" src="@Url.Content(item.Photo)" alt="" />
                         </span>
                         <a asp-action="Details" asp-route-id="@item.ApartmentId">
                             <h2>@Html.DisplayFor(modelItem => item.Address)</h2>
