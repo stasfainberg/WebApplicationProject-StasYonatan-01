@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="~/css/main.css" />
         <link rel="stylesheet" href="~/css/Navbar-Dropdown.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -24,6 +25,11 @@
     </environment>
 </head>
 <body>
+
+    <div id="dialog" title="Welcome!" class="dialog-message">
+        <p>This site created by Karin Wasenstein, Dana Koren, Yontan Ben Avraham and Stas Fainberg. Please register first!</p>
+    </div>
+
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -47,6 +53,9 @@
                         }
                         <li><a asp-area="" asp-controller="Apartments" asp-action="About">About</a></li>
                         <li><a asp-area="" asp-controller="Apartments" asp-action="Contact">Contact</a></li>
+                        <li>
+                            <a id="help">?</a>
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -122,6 +131,28 @@
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKp42W_7Sc_kcVimZm-pPKG2TCXeFdzto&callback=initMap">
         </script>
     </environment>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(document).ready(
+            $(function () {
+                $("#dialog").dialog({
+                    autoOpen: false,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "explode",
+                        duration: 1000
+                    }
+                });
+
+                $("#help").click(function () {
+                    $("#dialog").dialog("open");
+                });
+            }));
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>

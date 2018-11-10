@@ -18,6 +18,7 @@
     <PackageReference Include="Easyforce.GuigleAPI" Version="1.0.6" />
     <PackageReference Include="entityframework" Version="6.2.0" />
     <PackageReference Include="GoogleMaps.LocationServices" Version="1.2.0.2" />
+    <PackageReference Include="GtfsRealtimeBindings" Version="0.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" PrivateAssets="All" />

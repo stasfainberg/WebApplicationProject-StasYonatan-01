@@ -14,6 +14,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TachzukanitBE.Data;
 using TachzukanitBE.Models;
+using System.Net;
+using ProtoBuf;
+using transit_realtime;
+
 
 namespace TachzukanitBE.Controllers
 {
@@ -98,12 +102,13 @@ namespace TachzukanitBE.Controllers
             {
                 GoogleGeocodingAPI.GoogleAPIKey = "AIzaSyDKp42W_7Sc_kcVimZm-pPKG2TCXeFdzto";
                 var result = await GoogleGeocodingAPI.GetCoordinatesFromAddressAsync(apartmentAddress);
-
                 point = new MapPoint
                 {
                     Latitude = result.Item1,
                     Longitude = result.Item2
                 };
+
+
             }
             catch (Exception ex)
             {
