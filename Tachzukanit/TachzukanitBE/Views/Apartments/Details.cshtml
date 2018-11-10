@@ -27,12 +27,6 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Photo)
-        </dt>
-        <dd>
-            <img class="img-large" src="@Url.Content(Model.Photo)" alt="" />
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.Address)
         </dt>
         <dd>
@@ -43,6 +37,12 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.RoomsNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Photo)
+        </dt>
+        <dd>
+            <img class="img-large" src="@Url.Content(Model.Photo)" alt="" />
         </dd>
     </dl>
 </div>

@@ -6,6 +6,15 @@
 @section Scripts
     {
     <link rel="stylesheet" href="~/css/main.css" />
+    <script>
+        $(document).ready(function () {
+            $('[data-confirm]').click(function (e) {
+                if (!confirm(jQuery(this).attr("data-confirm"))) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
 }
 
 <div style="float:right">
@@ -38,12 +47,6 @@
             @Html.DisplayFor(model => model.Content)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Resources)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Resources)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.CreationDate)
         </dt>
         <dd>
@@ -55,11 +58,17 @@
         <dd>
             @Html.DisplayFor(model => model.ModifiedDate)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Resources)
+        </dt>
+        <dd>
+            <img class="img-large" src="@Url.Content(Model.Resources)" alt="" />
+        </dd>
     </dl>
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="MalfunctionId" />
-        <Button type="submit" class="btn btn-danger">
+        <Button type="submit" class="btn btn-danger" data-confirm="Are you sure?">
             <i class="fa fa-trash-o fa-lg"></i> Delete
         </Button>
     </form>

@@ -226,7 +226,7 @@ namespace TachzukanitBE.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Janitor,Guide,SocialWorker")]
-        public async Task<IActionResult> Edit(string id, [Bind("MalfunctionId,Status,Title,Content,Resources")] Malfunction malfunction)
+        public async Task<IActionResult> Edit(string id, [Bind("MalfunctionId,Status,Title,Content,Resources")] Malfunction malfunction, IFormFile files)
         {
             if (id != malfunction.MalfunctionId)
             {
@@ -235,6 +235,11 @@ namespace TachzukanitBE.Controllers
 
             if (ModelState.IsValid)
             {
+                if (files != null)
+                {
+                    SavePhoto(malfunction, files);
+                }
+
                 if (!MalfunctionExists(malfunction.MalfunctionId))
                     return NotFound();
 
