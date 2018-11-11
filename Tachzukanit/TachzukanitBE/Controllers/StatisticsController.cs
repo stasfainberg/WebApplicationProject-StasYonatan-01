@@ -29,7 +29,7 @@ namespace TachzukanitBE.Controllers
             table.Columns.Add("Location", typeof(double));
         }
 
-        public ActionResult Index(string address, string apartmentAddress, int month)
+        public ActionResult Index(string address)
         {
             // ---- Bar Graph ----
             // Query with Join and Group By- using address parameter
@@ -62,16 +62,6 @@ namespace TachzukanitBE.Controllers
 
             ViewBag.Status = malfunctionsPieJson;
 
-            if (month != 0 && !String.IsNullOrEmpty(apartmentAddress))
-            {
-                Apartment apartment = _context.Apartment.Include(m => m.malfunctions).FirstOrDefault(x => x.Address.Contains(apartmentAddress));
-                InitiallizeTrainData(month);
-                Classifier classifier = new Classifier();
-                classifier.TrainClassifier(table);
-                String name = classifier.Classify(new double[] { apartment.RoomsNumber, month, apartment.Longitude + apartment.Latitude });
-                ViewData["classification"] = name;
-            }
-
             return View();
         }
         
@@ -91,7 +81,24 @@ namespace TachzukanitBE.Controllers
                 };
             return Json(JsonConvert.SerializeObject(qBarGraph.ToList()));
         }
-        
+
+        public JsonResult classify_extra_stuff(string address, int month)
+        {
+            Apartment apartment = _context.Apartment.Include(m => m.malfunctions).FirstOrDefault(x => x.Address.Contains(address));
+            InitiallizeTrainData(month);
+            Classifier classifier = new Classifier();
+            classifier.TrainClassifier(table);
+            var name = classifier.Classify(new double[] { apartment.RoomsNumber, month, apartment.Longitude + apartment.Latitude });
+
+            string message;
+
+            message = name.ToLower() == "above" ? 
+                "Consider putting more stuff at this area and this month, there should be a lot of malfunctions" : 
+                "Your Stuff is quiet enough! :) No need to get extra.";
+
+            return Json($"{{\"message\":\"{message}\"}}");
+        }
+
         private void InitiallizeMalfPerMonth(Apartment apartment)
         {
             for (int i=0;i<12;i++)
