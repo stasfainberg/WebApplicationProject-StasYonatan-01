@@ -18,7 +18,6 @@ namespace TachzukanitBE.Controllers
         private DataTable table = new DataTable();
         private DataSet dataSet = new DataSet();
         
-
         public StatisticsController(TachzukanitDbContext context)
         {
             _context = context;
@@ -27,6 +26,7 @@ namespace TachzukanitBE.Controllers
             table.Columns.Add("Month", typeof(double));
             table.Columns.Add("Location", typeof(double));
         }
+
         public ActionResult Index(string address, string apartmentAddress, int month)
         {
             // ---- Bar Graph ----
@@ -72,6 +72,24 @@ namespace TachzukanitBE.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public JsonResult malfunctions_in_apartment(string address)
+        {
+            // ---- Bar Graph ----
+            // Query with Join and Group By- using address parameter
+            var qBarGraph = from malfunctions in _context.Malfunction
+                join apartments in _context.Apartment on malfunctions.CurrentApartment equals apartments
+                where apartments.Address.Contains(address)
+                group malfunctions by malfunctions.CreationDate.Month into groupMalfunctions
+                select new
+                {
+                    month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(groupMalfunctions.First().CreationDate.Month),
+                    count = groupMalfunctions.Count()
+                };
+            return Json(JsonConvert.SerializeObject(qBarGraph.ToList()));
+        }
+
 
         private void InitiallizeTrainData()
         {
