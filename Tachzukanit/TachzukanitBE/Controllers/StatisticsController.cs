@@ -8,6 +8,8 @@ using TachzukanitBE.Data;
 using TachzukanitBE.Models;
 using ProbabilityFunctions;
 using System;
+using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace TachzukanitBE.Controllers
@@ -29,6 +31,7 @@ namespace TachzukanitBE.Controllers
             table.Columns.Add("Location", typeof(double));
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Index(string address)
         {
             // ---- Bar Graph ----
