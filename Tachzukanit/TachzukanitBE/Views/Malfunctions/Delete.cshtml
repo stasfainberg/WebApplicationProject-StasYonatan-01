@@ -6,15 +6,36 @@
 @section Scripts
     {
     <link rel="stylesheet" href="~/css/main.css" />
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
-        $(document).ready(function () {
-            $('[data-confirm]').click(function (e) {
-                if (!confirm(jQuery(this).attr("data-confirm"))) {
-                    e.preventDefault();
-                }
-            });
-        });
+        $(document).ready(
+            $(function () {
+                $("#dialog-delete").dialog({
+                    autoOpen: false,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "explode",
+                        duration: 1000
+                    },
+                    buttons: {
+                        "Yes": function () {
+                            $('#delete-form').submit();
+                        },
+                        No: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+
+                $('[data-confirm]').click(function (e) {
+                    $("#dialog-delete").dialog("open");
+                });
+            }));
     </script>
+
 }
 
 <div style="float:right">
@@ -66,10 +87,13 @@
         </dd>
     </dl>
 
-    <form asp-action="Delete">
+    <form asp-action="Delete" id="delete-form">
         <input type="hidden" asp-for="MalfunctionId" />
-        <Button type="submit" class="btn btn-danger" data-confirm="Are you sure?">
+        <Button type="button" class="btn btn-danger" data-confirm="Are you sure?" value="Yes">
             <i class="fa fa-trash-o fa-lg"></i> Delete
         </Button>
     </form>
+    <div id="dialog-delete" title="Delete" class="dialog-message">
+        <p>Are you sure?</p>
+    </div>
 </div>

@@ -8,6 +8,7 @@ using TachzukanitBE.Data;
 using TachzukanitBE.Models;
 using ProbabilityFunctions;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace TachzukanitBE.Controllers
 {
@@ -17,6 +18,7 @@ namespace TachzukanitBE.Controllers
         private const int TRESHOLD = 5;
         private DataTable table = new DataTable();
         private DataSet dataSet = new DataSet();
+        private int[] malfCount = new int[12];
         
         public StatisticsController(TachzukanitDbContext context)
         {
@@ -62,8 +64,8 @@ namespace TachzukanitBE.Controllers
 
             if (month != 0 && !String.IsNullOrEmpty(apartmentAddress))
             {
-                Apartment apartment = _context.Apartment.FirstOrDefault(x => x.Address.Contains(apartmentAddress));
-                InitiallizeTrainData();
+                Apartment apartment = _context.Apartment.Include(m => m.malfunctions).FirstOrDefault(x => x.Address.Contains(apartmentAddress));
+                InitiallizeTrainData(month);
                 Classifier classifier = new Classifier();
                 classifier.TrainClassifier(table);
                 String name = classifier.Classify(new double[] { apartment.RoomsNumber, month, apartment.Longitude + apartment.Latitude });
@@ -72,7 +74,7 @@ namespace TachzukanitBE.Controllers
 
             return View();
         }
-
+        
         [HttpGet]
         public JsonResult malfunctions_in_apartment(string address)
         {
@@ -89,26 +91,39 @@ namespace TachzukanitBE.Controllers
                 };
             return Json(JsonConvert.SerializeObject(qBarGraph.ToList()));
         }
-
-
-        private void InitiallizeTrainData()
+        
+        private void InitiallizeMalfPerMonth(Apartment apartment)
         {
-            var apartments = _context.Apartment.ToList();
+            for (int i=0;i<12;i++)
+            {
+                malfCount[i] = 0;
+            }
+            foreach(Malfunction malf in apartment.malfunctions)
+            {
+                malfCount[malf.CreationDate.Month - 1] ++;
+            }
+        }
+
+        private void InitiallizeTrainData(int month)
+        {
+            var apartments = _context.Apartment.Include(m => m.malfunctions).ToList();
             foreach(Apartment apartment in apartments)
             {
                 double location = apartment.Latitude + apartment.Longitude;
-                for (int i = 1; i <= 12; i++)
-                {
-                    if (apartment.malfunctions == null || apartment.malfunctions.Count < TRESHOLD)
+                //for (int i = 1; i <= 12; i++)
+                //{
+                    InitiallizeMalfPerMonth(apartment);
+
+                    if (malfCount[month - 1] < TRESHOLD)
                     {
-                        table.Rows.Add("below", apartment.RoomsNumber, GetApartmentMalfByMonth(apartment, i), location);
+                        table.Rows.Add("under", apartment.RoomsNumber, GetApartmentMalfByMonth(apartment, month), location);
                     }
                     else
                     {
-                            table.Rows.Add("above", apartment.RoomsNumber, GetApartmentMalfByMonth(apartment, i), location);
+                        table.Rows.Add("above", apartment.RoomsNumber, GetApartmentMalfByMonth(apartment, month), location);
                     }
                     
-                }
+                //}
             }
             
         }

@@ -152,7 +152,7 @@ namespace TachzukanitBE.Controllers
                 // Adding the apartment to the malfunction to save
                 var curApartment = queryApt.First();
                 malfunction.CurrentApartment = curApartment;
-
+                
                 // Adding the user to the malfunction to save
                 var curUser = queryUsr.First();
                 malfunction.RequestedBy= curUser;
