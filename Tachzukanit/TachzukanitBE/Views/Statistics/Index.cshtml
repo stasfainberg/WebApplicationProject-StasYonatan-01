@@ -22,7 +22,7 @@
     <p>The following chart shows the number of malfunctions per month for the following address</p>
     <div class="search">
         <input id="Address" type="text" class="search-query" placeholder="Search Address" />
-        <button onclick="CreateBarChart()" class="search-button">
+        <button onclick="createBarChart()" class="search-button">
             <i class="fa fa-search"></i>
         </button>
     </div>
@@ -30,26 +30,17 @@
 </div>
 
 <h3>Should i get more stuff ?</h3>
-<form asp-controller="Statistics" asp-action="Index" method="get">
-    <div class="search">
-        <input name="apartmentAddress" type="text" class="search-query" placeholder="Search Address" />
-        <input name="month" type="text" class="search-query" placeholder="Search month" />
-        <button id="searchButton" class="search-button" type="submit">
-            <i class="fa fa-search"></i>
-        </button>
-    </div>
-</form>
-
-<div>
-    @if (@ViewBag.classification == "under")
-    {
-        <p>Your Stuff is quiet enough! :) No need to get extra</p>
-    }
-    else if (@ViewBag.classification == "above")
-    {
-        <p>Concider putting more stuff at this area and this month, there should be a lot of malfunctions</p>
-    }
+<div class="search">
+    <input id="apartmentAddress" type="text" class="search-query" placeholder="Search Address" />
+    <input id="month" type="text" class="search-query" placeholder="Search month" />
+    <button id="searchButton" class="search-button" onclick="classifyExtraStuff()">
+        <i class="fa fa-search"></i>
+    </button>
 </div>
+<br>
+<br>
+<br>
+<p id="classification"></p>
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
 
@@ -231,7 +222,7 @@
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(x));
-        
+
         // add the y Axis
         svg.append("g")
             .call(d3.axisLeft(y))
@@ -242,7 +233,7 @@
             .text("Malfunctions");
     }
 
-    function CreateBarChart() {
+    function createBarChart() {
         var address = $("#Address").val();
         var URL = "https://localhost:44368/Statistics/malfunctions_in_apartment?address=" + address;
         $.ajax({
@@ -253,6 +244,21 @@
                 redrawBar(monthCount);
             }
         });
+    }
+
+    function classifyExtraStuff() {
+        var address = $("#apartmentAddress").val();
+        var month = $("#month").val();
+        var URL = "https://localhost:44368/Statistics/classify_extra_stuff?address=" + address + "&month=" + month;
+        $.ajax({
+            url: URL,
+            type: 'GET',
+            success: function (res) {
+                var jsonData = JSON.parse(res);
+                $("#classification").html(jsonData.message);
+            }
+        });
+
     }
 
     var monthCount = JSON.parse('@Html.Raw(ViewBag.Count)');
