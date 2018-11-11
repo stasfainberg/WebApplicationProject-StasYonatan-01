@@ -35,15 +35,15 @@
     </div>
 }
     <h3>Should i get more stuff ?</h3>
-<form asp-controller="Statistics" asp-action="Index" method="get">
-    <div class="search">
-        <input name="apartmentAddress" type="text" class="search-query" placeholder="Search Address" />
-        <input name="month" type="text" class="search-query" placeholder="Search month" />
-        <button id="searchButton" class="search-button" type="submit">
-            <i class="fa fa-search"></i>
-        </button>
-    </div>
-</form>
+    <form asp-controller="Statistics" asp-action="Index" method="get">
+        <div class="search" style="display:flex; width:100%">
+            <input name="apartmentAddress" type="text" class="search-query" placeholder="Search Address" style="width:40%"/>
+            <input name="month" type="text" class="search-query" placeholder="Search Month" style="width:40%;margin-left:3%; margin-right:4%" />
+            <button id="searchButton" class="search-button" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </form>
 
 <div>
     @if (@ViewBag.classification == "under")
