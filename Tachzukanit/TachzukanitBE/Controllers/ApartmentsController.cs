@@ -84,7 +84,6 @@ namespace TachzukanitBE.Controllers
                 var location = AddLongLatAsync(apartment.Address);
                 apartment.Latitude = location.Result.Latitude;
                 apartment.Longitude = location.Result.Longitude;
-
                 SavePhoto(apartment, files);
                 _context.Add(apartment);
                 await _context.SaveChangesAsync();

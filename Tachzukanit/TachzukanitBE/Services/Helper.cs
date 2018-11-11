@@ -12,6 +12,10 @@ namespace ProbabilityFunctions
             {
                 double avg = source.Average();
                 double d = source.Aggregate(0.0, (total, next) => total += Math.Pow(next - avg, 2));
+                if (d==0)
+                {
+                    return 0;
+                }
                 return d / (source.Count() - 1);
             }
             return 0;
@@ -35,7 +39,7 @@ namespace ProbabilityFunctions
                 double expo = (x - mean) * (x - mean) / (2.0 * standard_dev * standard_dev);
                 return Math.Exp(-expo) / fact;
             }
-            return 0;
+            return mean;
         }
 
         public static double NORMDIST(double x, double mean, double standard_dev, bool cumulative)
