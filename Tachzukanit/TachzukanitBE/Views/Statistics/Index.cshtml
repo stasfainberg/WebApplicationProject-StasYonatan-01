@@ -34,7 +34,7 @@
         <div class="bar"></div>
     </div>
 }
-
+    <h3>Should i get more stuff ?</h3>
 <form asp-controller="Statistics" asp-action="Index" method="get">
     <div class="search">
         <input name="apartmentAddress" type="text" class="search-query" placeholder="Search Address" />
@@ -44,7 +44,17 @@
         </button>
     </div>
 </form>
-<div>@ViewBag.classification</div>
+
+<div>
+    @if (@ViewBag.classification == "under")
+    {
+        <p>Your Stuff is quiet enough! :) No need to get extra</p>
+    }
+    else if (@ViewBag.classification == "above")
+    {
+        <p>Concider putting more stuff at this area and this month, there should be a lot of malfunctions</p>
+    }
+    </div>
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
 
