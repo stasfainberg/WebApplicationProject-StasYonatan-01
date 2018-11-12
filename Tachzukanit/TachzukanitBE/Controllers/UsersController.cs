@@ -47,7 +47,7 @@ namespace TachzukanitBE.Controllers
         {
             if (String.IsNullOrEmpty(id))
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             var user = await _context.User
@@ -55,7 +55,7 @@ namespace TachzukanitBE.Controllers
 
             if (user == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             return View(user);
@@ -66,7 +66,7 @@ namespace TachzukanitBE.Controllers
         {
             if (String.IsNullOrEmpty(id))
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
             if (_userManager.GetUserId(HttpContext.User).Equals(id))
             {
@@ -76,7 +76,7 @@ namespace TachzukanitBE.Controllers
             var user = await _context.User.FindAsync(id);
             if (user == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
             return View(user);
         }
@@ -88,7 +88,7 @@ namespace TachzukanitBE.Controllers
         {
             if (!id.Equals(user.Id))
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             if (ModelState.IsValid)
@@ -106,7 +106,7 @@ namespace TachzukanitBE.Controllers
                 {
                     if (!UserExists(user.Id))
                     {
-                        return NotFound();
+                        return RedirectToAction("NotFoundPage");
                     }
                     else
                     {
@@ -129,14 +129,14 @@ namespace TachzukanitBE.Controllers
         {
             if (String.IsNullOrEmpty(id))
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             var user = await _context.User
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             return View(user);
@@ -150,6 +150,11 @@ namespace TachzukanitBE.Controllers
             _context.User.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult NotFoundPage()
+        {
+            return View();
         }
     }
 

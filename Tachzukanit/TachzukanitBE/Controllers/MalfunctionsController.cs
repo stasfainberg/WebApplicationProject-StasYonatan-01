@@ -90,14 +90,14 @@ namespace TachzukanitBE.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             var malfunction = await _context.Malfunction
                 .FirstOrDefaultAsync(m => m.MalfunctionId == id);
             if (malfunction == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             return View(malfunction);
@@ -203,13 +203,13 @@ namespace TachzukanitBE.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             var malfunction = await _context.Malfunction.FindAsync(id);
             if (malfunction == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             // Adding all the statuses to the viewData
@@ -230,7 +230,7 @@ namespace TachzukanitBE.Controllers
         {
             if (id != malfunction.MalfunctionId)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             if (ModelState.IsValid)
@@ -241,7 +241,7 @@ namespace TachzukanitBE.Controllers
                 }
 
                 if (!MalfunctionExists(malfunction.MalfunctionId))
-                    return NotFound();
+                    return RedirectToAction("NotFoundPage");
 
                 // Getting the malfunction from db
                 var malfunctionToSave = _context.Malfunction.First(mal => mal.MalfunctionId == id);
@@ -268,14 +268,14 @@ namespace TachzukanitBE.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             var malfunction = await _context.Malfunction
                 .FirstOrDefaultAsync(m => m.MalfunctionId == id);
             if (malfunction == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             return View(malfunction);
@@ -295,6 +295,11 @@ namespace TachzukanitBE.Controllers
         private bool MalfunctionExists(string id)
         {
             return _context.Malfunction.Any(e => e.MalfunctionId == id);
+        }
+
+        public IActionResult NotFoundPage()
+        {
+            return View();
         }
     }
 }

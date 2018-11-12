@@ -49,7 +49,7 @@ namespace TachzukanitBE.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             var apartment = await _context.Apartment.Include(x=> x.malfunctions)
@@ -57,7 +57,7 @@ namespace TachzukanitBE.Controllers
 
             if (apartment == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             return View(apartment);
@@ -152,13 +152,13 @@ namespace TachzukanitBE.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             var apartment = await _context.Apartment.FindAsync(id);
             if (apartment == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
             return View(apartment);
         }
@@ -173,7 +173,7 @@ namespace TachzukanitBE.Controllers
         {
             if (id != apartment.ApartmentId)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             if (ModelState.IsValid)
@@ -192,7 +192,7 @@ namespace TachzukanitBE.Controllers
                 {
                     if (!ApartmentExists(apartment.ApartmentId))
                     {
-                        return NotFound();
+                        return RedirectToAction("NotFoundPage");
                     }
                     else
                     {
@@ -210,14 +210,14 @@ namespace TachzukanitBE.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             var apartment = await _context.Apartment
                 .FirstOrDefaultAsync(m => m.ApartmentId == id);
             if (apartment == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFoundPage");
             }
 
             return View(apartment);
@@ -262,6 +262,10 @@ namespace TachzukanitBE.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public IActionResult NotFoundPage()
+        {
+            return View();
         }
     }
 }
